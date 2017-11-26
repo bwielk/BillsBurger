@@ -43,4 +43,36 @@ public class BurgerTest {
 		burger.acceptAddition(Addition.SALAD);
 		assertEquals(1, burger.getAdditions().size());
 	}
+	
+	@Test
+	public void burgerCanHave4AdditionsOnly(){
+		burger.acceptAddition(Addition.SALAD);
+		assertEquals(1, burger.getAdditions().size());
+		burger.acceptAddition(Addition.CHEDDAR);
+		assertEquals(2, burger.getAdditions().size());
+		burger.acceptAddition(Addition.PEPPERS);
+		assertEquals(3, burger.getAdditions().size());
+		burger.acceptAddition(Addition.PICKLES);
+		assertEquals(4, burger.getAdditions().size());
+		assertEquals("This burger can have only 4 additions", burger.acceptAddition(Addition.PICKLES));
+	}
+	
+	@Test
+	public void burgerCanRemoveAnAddition(){
+		burger.acceptAddition(Addition.HALOUMI);
+		burger.acceptAddition(Addition.CHEDDAR);
+		burger.acceptAddition(Addition.SALAD);
+		burger.acceptAddition(Addition.PEPPERS);
+		burger.removeAddition(Addition.HALOUMI);
+		assertEquals(3, burger.getAdditions().size());
+	}
+	
+	@Test 
+	public void burgerCanStoreTheSameAdditions(){
+		burger.acceptAddition(Addition.HALOUMI);
+		burger.acceptAddition(Addition.HALOUMI);
+		burger.acceptAddition(Addition.HALOUMI);
+		burger.acceptAddition(Addition.PEPPERS);
+		assertEquals(4, burger.getAdditions().size());
+	}
 }

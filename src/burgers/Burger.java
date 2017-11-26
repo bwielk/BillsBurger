@@ -46,12 +46,19 @@ public class Burger {
 		this.meat = meat;
 	}
 	
-	public void acceptAddition(Addition addition){
-		this.additions.put(addition, addition.getPrice());
+	public String acceptAddition(Addition addition){
+		if(this.additions.size()<4){
+			this.additions.put(addition, addition.getPrice());
+		}
+		return "This burger can have only 4 additions";
 	}
 	
 	public HashMap<Addition, Double> getAdditions(){
 		return this.additions;
+	}
+	
+	public void removeAddition(Addition addition){
+		additions.remove(addition);
 	}
 	
 }
