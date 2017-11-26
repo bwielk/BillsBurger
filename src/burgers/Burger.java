@@ -8,14 +8,14 @@ public class Burger {
 	protected MeatType meat;
 	protected BreadType bread;
 	protected double basePrice;
-	protected HashMap<Addition, Double> additions;
+	protected EnumMap<Addition, Integer> additions;
 	
 	public Burger(String name, MeatType meat, BreadType bread){
 		this.name = name;
 		this.meat = meat;
 		this.bread = bread;
 		this.basePrice = 3.00;
-		this.additions = new HashMap<Addition, Double>();
+		this.additions = new EnumMap<Addition, Integer>(Addition.class);
 	}
 
 	public double getBasePrice() {
@@ -47,13 +47,25 @@ public class Burger {
 	}
 	
 	public String acceptAddition(Addition addition){
-		if(this.additions.size()<4){
-			this.additions.put(addition, addition.getPrice());
+		if(getNumberOfAdditions()<4){
+			if(additions.containsKey(addition)){
+				additions.put(addition, additions.get(addition)+1);
+			}else{
+				this.additions.put(addition, 1);
+			}
 		}
 		return "This burger can have only 4 additions";
 	}
 	
-	public HashMap<Addition, Double> getAdditions(){
+	public int getNumberOfAdditions(){
+		int result = 0;
+		for(Integer number : additions.values()){
+			result += (int)number;
+		}
+		return result;
+	}
+	
+	public EnumMap<Addition, Integer> getAdditions(){
 		return this.additions;
 	}
 	

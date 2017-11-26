@@ -41,7 +41,7 @@ public class BurgerTest {
 	@Test
 	public void burgerCanHaveAnAddition(){
 		burger.acceptAddition(Addition.SALAD);
-		assertEquals(1, burger.getAdditions().size());
+		assertEquals(1, burger.getNumberOfAdditions());
 	}
 	
 	@Test
@@ -64,7 +64,7 @@ public class BurgerTest {
 		burger.acceptAddition(Addition.SALAD);
 		burger.acceptAddition(Addition.PEPPERS);
 		burger.removeAddition(Addition.HALOUMI);
-		assertEquals(3, burger.getAdditions().size());
+		assertEquals(3, burger.getNumberOfAdditions());
 	}
 	
 	@Test 
@@ -73,6 +73,6 @@ public class BurgerTest {
 		burger.acceptAddition(Addition.HALOUMI);
 		burger.acceptAddition(Addition.HALOUMI);
 		burger.acceptAddition(Addition.PEPPERS);
-		assertEquals(4, burger.getAdditions().size());
+		assertEquals(4, burger.getNumberOfAdditions());
 	}
 }
