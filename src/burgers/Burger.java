@@ -34,10 +34,6 @@ public class Burger {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public MeatType getMeat() {
 		return meat;
 	}
