@@ -52,6 +52,7 @@ public class TillTest{
 		till1.addProduct(burger1);
 		till1.completeTransaction();
 		assertEquals(2, till1.getSoldBurgers());
+		till1.newTransaction();
 		till1.addProduct(burger1);
 		till1.addProduct(burger1);
 		till1.completeTransaction();
@@ -128,6 +129,7 @@ public class TillTest{
 		till1.addProduct(burger2);
 		till1.completeTransaction();
 		assertEquals(7.6, till1.getIncome(), 0.1);
+		till1.newTransaction();
 		till1.addProduct(burger3);
 		till1.addProduct(burger1);
 		till1.completeTransaction();
