@@ -70,7 +70,11 @@ public class Burger {
 	}
 	
 	public void removeAddition(Addition addition){
-		additions.remove(addition);
+		if(additions.containsKey(addition)){
+			additions.put(addition, additions.get(addition)-1);
+		}else{
+			additions.remove(addition);
+		}
 	}
 	
 }

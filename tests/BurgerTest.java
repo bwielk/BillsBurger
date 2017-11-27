@@ -75,4 +75,14 @@ public class BurgerTest {
 		burger.acceptAddition(Addition.PEPPERS);
 		assertEquals(4, burger.getNumberOfAdditions());
 	}
+	
+	@Test 
+	public void burgerCanRemoveExamplesOfTheSameAdditions(){
+		burger.acceptAddition(Addition.HALOUMI);
+		burger.acceptAddition(Addition.HALOUMI);
+		burger.acceptAddition(Addition.HALOUMI);
+		burger.acceptAddition(Addition.PEPPERS);
+		burger.removeAddition(Addition.HALOUMI);
+		assertEquals(3, burger.getNumberOfAdditions());
+	}
 }
