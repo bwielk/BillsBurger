@@ -1,3 +1,4 @@
+package burgers;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
@@ -84,5 +85,9 @@ public class BurgerTest {
 		burger.acceptAddition(Addition.PEPPERS);
 		burger.removeAddition(Addition.HALOUMI);
 		assertEquals(3, burger.getNumberOfAdditions());
+		burger.removeAddition(Addition.HALOUMI);
+		assertEquals(2, burger.getNumberOfAdditions());
+		burger.removeAddition(Addition.HALOUMI);
+		assertEquals(1, burger.getNumberOfAdditions());
 	}
 }

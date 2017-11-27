@@ -76,5 +76,4 @@ public class Burger {
 			additions.remove(addition);
 		}
 	}
-	
 }
