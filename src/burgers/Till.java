@@ -37,6 +37,10 @@ public class Till {
 		burger.acceptAddition(addition);
 	}
 	
+	public void useVoucher(Voucher voucher){
+		voucher.validate();
+	}
+	
 	public double calculateBurgerPrice(Burger burger){
 		double totalPrice = 0.0;
 		for(Addition addition : burger.getAdditions().keySet()){
