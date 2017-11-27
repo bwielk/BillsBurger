@@ -194,6 +194,20 @@ public class TillTest{
 		assertEquals("The total transaction is £ 11.90", till1.completeTransaction());
 	}
 	
+	@Test
+	public void canSubstractTotalTransactionValue(){
+		till1.newTransaction();
+		till1.addProduct(burger1);//3
+		till1.addProduct(burger1);//3
+		till1.addProduct(burger2);//4.6
+		till1.addProduct(burger3);//4.3
+		till1.addProduct(burger3);//4.3
+		assertEquals("The total transaction is £ 19.20", till1.completeTransaction());
+		till1.removeProduct(burger3);
+		till1.removeProduct(burger1);
+		assertEquals("The total transaction is £ 11.90", till1.completeTransaction());
+	}
+	
 	
 
 }

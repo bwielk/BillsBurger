@@ -65,6 +65,19 @@ public class Till {
 		return total;
 	}
 	
+	public String removeProduct(Burger burger){
+		if(this.transaction.containsKey(burger)){
+			if(this.transaction.get(burger) >1){
+				this.transaction.put(burger, this.transaction.get(burger)-1);
+			}else if(this.transaction.get(burger) == 1){
+				this.transaction.remove(burger);
+			}
+		}else{
+			return "No such product on the transaction list";
+		}
+		return burger.getName() + " has been removed";
+	}
+	
 	public String completeTransaction(){
 		BigDecimal value = new BigDecimal("0.0");
 		for(Burger product : this.transaction.keySet()){
