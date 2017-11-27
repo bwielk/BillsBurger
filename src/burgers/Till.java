@@ -10,7 +10,7 @@ public class Till {
 	private int processedTransactions;
 	
 	public Till(){
-		this.income = income;
+		this.income = 0;
 		this.soldBurgers = 0;
 		this.transaction = new HashMap<Burger, Integer>();
 		this.processedTransactions = 0;
@@ -24,18 +24,12 @@ public class Till {
 		return transaction;
 	}
 
-	public int getProcessedTransactions() {
+	public int numOfProcessedTransactions() {
 		return processedTransactions;
 	}
-
 	
 	public int getSoldBurgers() {
 		return soldBurgers;
-	}
-	
-	public void sell(Burger burger){
-		this.income += calculateBurgerPrice(burger);
-		this.soldBurgers += 1;
 	}
 	
 	public void addAddition(Burger burger, Addition addition){
@@ -51,23 +45,33 @@ public class Till {
 	}
 	
 	public void addProduct(Burger burger){
-		if(transaction.containsKey(burger)){
-			transaction.put(burger, transaction.get(burger)+1);
+		if(this.transaction.containsKey(burger)){
+			this.transaction.put(burger, this.transaction.get(burger)+1);
 		}else{
-			transaction.put(burger, 1);
+			this.transaction.put(burger, 1);
 		}
 	}
 	
 	public void newTransaction(){
-		transaction.clear();
+		this.transaction.clear();
 	}
 	
 	public int getNumberOfItems(){
 		int total = 0;
-		for(Burger product : transaction.keySet()){
-			total += (int)transaction.get(product);
+		for(Burger product : this.transaction.keySet()){
+			total += (int)this.transaction.get(product);
 		}
 		return total;
 	}
-
+	
+	public void completeTransaction(){
+		for(Burger product : this.transaction.keySet()){
+			for(int i=0; i<(int)(this.transaction.get(product)); i++){
+				this.income += calculateBurgerPrice(product);
+				this.soldBurgers += 1;
+			}
+		}
+		this.processedTransactions += 1;
+	}
+	
 }

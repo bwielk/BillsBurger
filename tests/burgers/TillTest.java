@@ -30,26 +30,31 @@ public class TillTest{
 
 	@Test
 	public void tillCanSellBurgers(){
-		till1.sell(burger1);
+		till1.addProduct(burger1);
+		till1.completeTransaction();
 		assertEquals(3.00, till1.getIncome(), 0.1);
 	}
 	
 	@Test
 	public void tillRecordsTheTotalIncome(){
-		till1.sell(burger1);
-		till1.sell(burger1);
-		till1.sell(burger1);
-		till1.sell(burger1);
+		
+		till1.addProduct(burger1);
+		till1.addProduct(burger1);
+		till1.addProduct(burger1);
+		till1.addProduct(burger1);
+		till1.completeTransaction();
 		assertEquals(12.00, till1.getIncome(), 0.1);
 	}
 	
 	@Test
 	public void tillRecordsNumberOfSoldBurgers(){
-		till1.sell(burger1);
-		till1.sell(burger1);
+		till1.addProduct(burger1);
+		till1.addProduct(burger1);
+		till1.completeTransaction();
 		assertEquals(2, till1.getSoldBurgers());
-		till1.sell(burger1);
-		till1.sell(burger1);
+		till1.addProduct(burger1);
+		till1.addProduct(burger1);
+		till1.completeTransaction();
 		assertEquals(4, till1.getSoldBurgers());
 	}
 	
@@ -118,11 +123,14 @@ public class TillTest{
 	
 	@Test
 	public void canCalculateIncomeAfterSellingBurgersWithAdditions(){
-		till1.sell(burger1);
-		till1.sell(burger2);
+		till1.newTransaction();
+		till1.addProduct(burger1);
+		till1.addProduct(burger2);
+		till1.completeTransaction();
 		assertEquals(7.6, till1.getIncome(), 0.1);
-		till1.sell(burger3);
-		till1.sell(burger1);
+		till1.addProduct(burger3);
+		till1.addProduct(burger1);
+		till1.completeTransaction();
 		assertEquals(14.9, till1.getIncome(),0.1);
 	}
 	
@@ -171,7 +179,7 @@ public class TillTest{
 		till1.addProduct(burger1);//3
 		till1.addProduct(burger1);//3
 		till1.completeTransaction();
-		assertEquals(20.0, till1.getIncome(), 0.1);
+		assertEquals(20.9, till1.getIncome(), 0.1);
 		assertEquals(2, till1.numOfProcessedTransactions());
 	}
 
