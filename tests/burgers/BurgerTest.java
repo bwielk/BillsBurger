@@ -90,4 +90,5 @@ public class BurgerTest {
 		burger.removeAddition(Addition.HALOUMI);
 		assertEquals(1, burger.getNumberOfAdditions());
 	}
+
 }
