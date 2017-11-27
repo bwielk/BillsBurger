@@ -1,5 +1,6 @@
 package burgers;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 public class Till {
@@ -64,14 +65,18 @@ public class Till {
 		return total;
 	}
 	
-	public void completeTransaction(){
+	public String completeTransaction(){
+		BigDecimal value = new BigDecimal("0.0");
 		for(Burger product : this.transaction.keySet()){
 			for(int i=0; i<(int)(this.transaction.get(product)); i++){
-				this.income += calculateBurgerPrice(product);
+				double price = calculateBurgerPrice(product);
+				this.income += (double) price;
+				value = value.add(new BigDecimal("" + price + ""));
 				this.soldBurgers += 1;
 			}
 		}
 		this.processedTransactions += 1;
+		return "The total transaction is £ " + (new BigDecimal(String.format("%.2f", value)));
 	}
 	
 }

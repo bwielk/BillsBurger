@@ -184,5 +184,16 @@ public class TillTest{
 		assertEquals(20.9, till1.getIncome(), 0.1);
 		assertEquals(2, till1.numOfProcessedTransactions());
 	}
+	
+	@Test
+	public void canReturnTotalTransactionValue(){
+		till1.newTransaction();
+		till1.addProduct(burger1);//3
+		till1.addProduct(burger2);//4.6
+		till1.addProduct(burger3);//4.3
+		assertEquals("The total transaction is £ 11.90", till1.completeTransaction());
+	}
+	
+	
 
 }
