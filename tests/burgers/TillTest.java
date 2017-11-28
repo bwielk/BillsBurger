@@ -11,6 +11,7 @@ public class TillTest{
 	private Burger burger1;
 	private Burger burger2;
 	private Burger burger3;
+	private FreeClassicBurgerVoucher voucher1;
 	
 	@Before
 	public void before(){
@@ -25,6 +26,7 @@ public class TillTest{
 		till1.addAddition(burger3, Addition.TOMATO);
 		till1.addAddition(burger3, Addition.MOZZARELLA);
 		till1.addAddition(burger3, Addition.MOZZARELLA);
+		voucher1 = new FreeClassicBurgerVoucher();
 	}
 	
 
@@ -206,6 +208,18 @@ public class TillTest{
 		till1.removeProduct(burger3);
 		till1.removeProduct(burger1);
 		assertEquals("The total transaction is £ 11.90", till1.completeTransaction());
+	}
+	
+	@Test
+	public void tillReleasesAReceiptAfterTransaction(){
+		till1.newTransaction();
+		till1.addProduct(burger1);//3
+		till1.addProduct(burger1);//3
+		till1.addProduct(burger2);//4.6
+		till1.addProduct(burger3);//4.3
+		till1.completeTransactionWithVoucher(voucher1);
+		assertEquals(14.90, till1.getIncome(), 0.1);
+		assertEquals(1, till1.getUsedVochers());
 	}
 	
 	

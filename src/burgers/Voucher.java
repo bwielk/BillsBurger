@@ -2,7 +2,7 @@ package burgers;
 
 public class Voucher {
 	
-	private boolean isValid;
+	protected boolean isValid;
 	
 	public Voucher(){
 		this.isValid = true;
