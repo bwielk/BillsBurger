@@ -9,14 +9,20 @@ public class Till {
 	private int soldBurgers;
 	private HashMap<Burger, Integer> transaction;
 	private int processedTransactions;
+	private ArrayList<Voucherable> usedVouchers;
 	
 	public Till(){
 		this.income = 0;
 		this.soldBurgers = 0;
 		this.transaction = new HashMap<Burger, Integer>();
 		this.processedTransactions = 0;
+		this.usedVouchers = new ArrayList<Voucherable>();
 	}
 	
+	public int getUsedVouchers() {
+		return usedVouchers.size();
+	}
+
 	public double getIncome() {
 		return income;
 	}
@@ -82,7 +88,7 @@ public class Till {
 		return burger.getName() + " has been removed";
 	}
 	
-	public String completeTransaction(){
+	public BigDecimal calculateTransaction(){
 		BigDecimal value = new BigDecimal("0.0");
 		for(Burger product : this.transaction.keySet()){
 			for(int i=0; i<(int)(this.transaction.get(product)); i++){
@@ -92,12 +98,24 @@ public class Till {
 				this.soldBurgers += 1;
 			}
 		}
+		return value;
+	}
+	
+	public String completeTransaction(){
 		this.processedTransactions += 1;
-		return "The total transaction is £ " + (new BigDecimal(String.format("%.2f", value)));
+		return "The total transaction is £ " + (new BigDecimal(String.format("%.2f", calculateTransaction())));
 	}
 	
 	public String completeTransactionWithVoucher(Voucherable voucher){
-		
+		if(this.transaction.containsKey(voucher.getValueEquivalent())){
+			this.transaction.remove(this.transaction.get(voucher.getValueEquivalent()));
+		}else{
+			return "Voucher is not valid for any of the products";
+		}
+		this.processedTransactions += 1;
+		voucher.validate();
+		this.usedVouchers.add(voucher);
+		return "The total transaction is £ " + (new BigDecimal(String.format("%.2f", calculateTransaction())));
 	}
 	
 }

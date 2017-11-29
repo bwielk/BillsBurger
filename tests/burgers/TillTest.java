@@ -211,7 +211,7 @@ public class TillTest{
 	}
 	
 	@Test
-	public void tillReleasesAReceiptAfterTransaction(){
+	public void tillCompletesTransactionWithVoucher(){
 		till1.newTransaction();
 		till1.addProduct(burger1);//3
 		till1.addProduct(burger1);//3
@@ -219,7 +219,7 @@ public class TillTest{
 		till1.addProduct(burger3);//4.3
 		till1.completeTransactionWithVoucher(voucher1);
 		assertEquals(14.90, till1.getIncome(), 0.1);
-		assertEquals(1, till1.getUsedVochers());
+		assertEquals(1, till1.getUsedVouchers());
 	}
 	
 	
