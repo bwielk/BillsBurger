@@ -107,15 +107,14 @@ public class Till {
 	}
 	
 	public String completeTransactionWithVoucher(Voucherable voucher){
-		if(this.transaction.containsKey(voucher.getValueEquivalent())){
-			this.transaction.remove(this.transaction.get(voucher.getValueEquivalent()));
-		}else{
-			return "Voucher is not valid for any of the products";
+		for(Burger product : this.transaction.keySet()){
+			if(calculateBurgerPrice(product) == calculateBurgerPrice(voucher.getValueEquivalent()) && product.getName() == voucher.getValueEquivalent().getName()){
+				removeProduct(product);
+				this.processedTransactions += 1;
+				this.usedVouchers.add(voucher);
+				return "The total transaction is £ " + (new BigDecimal(String.format("%.2f", calculateTransaction())));
+			}
 		}
-		this.processedTransactions += 1;
-		voucher.validate();
-		this.usedVouchers.add(voucher);
-		return "The total transaction is £ " + (new BigDecimal(String.format("%.2f", calculateTransaction())));
+		return "Voucher is not valid for any of the products";
 	}
-	
 }

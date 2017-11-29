@@ -16,7 +16,7 @@ public class TillTest{
 	@Before
 	public void before(){
 		till1 = new Till();
-		burger1 = new Burger("Beef cheese", MeatType.BEEF, BreadType.WHOLEMEAL);//3.0
+		burger1 = new Burger("Classic Burger", MeatType.BEEF, BreadType.WHOLEMEAL);//3.0
 		burger2 = new Burger("Beef brgr", MeatType.BEEF, BreadType.RYE);//4.6
 		burger3 = new Burger("Chick brgr", MeatType.CHICKEN, BreadType.WHEAT);//4.3
 		till1.addAddition(burger2, Addition.HALOUMI);
@@ -211,17 +211,43 @@ public class TillTest{
 	}
 	
 	@Test
-	public void tillCompletesTransactionWithVoucher(){
+	public void tillCompletesTransactionWithVoucher1(){
 		till1.newTransaction();
-		till1.addProduct(burger1);//3
 		till1.addProduct(burger1);//3
 		till1.addProduct(burger2);//4.6
 		till1.addProduct(burger3);//4.3
 		till1.completeTransactionWithVoucher(voucher1);
-		assertEquals(14.90, till1.getIncome(), 0.1);
+		assertEquals(1, till1.getUsedVouchers());
+		assertEquals(1, till1.numOfProcessedTransactions());
+		assertEquals(8.9, till1.getIncome(), 0.1);
+	}
+	
+	@Test
+	public void tillCompletesTransactionWithVoucher2(){
+		till1.newTransaction();
+		till1.addProduct(burger1);//3
+		till1.addProduct(burger1);//3
+		till1.addProduct(burger1);//3
+		till1.completeTransactionWithVoucher(voucher1);
+		assertEquals(6.0, till1.getIncome(), 0.1);
 		assertEquals(1, till1.getUsedVouchers());
 	}
 	
+	@Test
+	public void tillDoesntCompleteTransactionWithVoucherIfNoValidBurgerInTransaction(){
+		till1.newTransaction();
+		till1.addProduct(burger2);//4.6
+		till1.addProduct(burger3);//4.3
+		assertEquals("Voucher is not valid for any of the products", till1.completeTransactionWithVoucher(voucher1));
+		assertEquals(0, till1.getUsedVouchers());
+	}
 	
-
+	@Test
+	public void tillCompletesTransactionWithVoucherIfBuyingOnlyOneBurger(){
+		till1.newTransaction();
+		till1.addProduct(burger1);//3
+		till1.completeTransactionWithVoucher(voucher1);
+		assertEquals(0.0, till1.getIncome(), 0.1);
+		assertEquals(1, till1.getUsedVouchers());
+	}
 }

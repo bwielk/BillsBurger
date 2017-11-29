@@ -15,7 +15,7 @@ public class FreeClassicBurgerVoucher extends Voucher implements Voucherable{
 	}
 	
 	public Burger setValueEquivalent(){
-		Burger burger = new Burger("Burger", MeatType.CHICKEN, BreadType.WHEAT);
+		Burger burger = new Burger("Classic Burger", MeatType.CHICKEN, BreadType.WHEAT);
 		return burger;
 	}
 	
