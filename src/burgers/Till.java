@@ -96,4 +96,8 @@ public class Till {
 		return "The total transaction is £ " + (new BigDecimal(String.format("%.2f", value)));
 	}
 	
+	public String completeTransactionWithVoucher(Voucherable voucher){
+		
+	}
+	
 }

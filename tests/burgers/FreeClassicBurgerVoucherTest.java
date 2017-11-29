@@ -8,10 +8,12 @@ import org.junit.Test;
 public class FreeClassicBurgerVoucherTest{
 	
 	private FreeClassicBurgerVoucher voucher;
+	private Till till;
 	
 	@Before
 	public void before(){
 		voucher = new FreeClassicBurgerVoucher();
+		till = new Till();
 	}
 
 	@Test
@@ -30,5 +32,12 @@ public class FreeClassicBurgerVoucherTest{
 	public void canGetInvalid(){
 		voucher.validate();
 		assertEquals(false, voucher.isValid());
+	}
+	
+	@Test
+	public void canGetValueEquivalent(){
+		double result = voucher.getValue();
+		Burger burger = voucher.getValueEquivalent();
+		assertEquals(till.calculateBurgerPrice(burger), result, 0.1);
 	}
 }

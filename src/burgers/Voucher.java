@@ -1,6 +1,6 @@
 package burgers;
 
-public class Voucher {
+public class Voucher{
 	
 	protected boolean isValid;
 	
