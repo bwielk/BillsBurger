@@ -4,6 +4,7 @@ import java.util.*;
 
 public class Burger {
 	
+	private boolean canStoreAdditions;
 	protected String name;
 	protected MeatType meat;
 	protected BreadType bread;
@@ -11,6 +12,7 @@ public class Burger {
 	private EnumMap<Addition, Integer> additions;
 	
 	public Burger(String name, MeatType meat, BreadType bread){
+		this.canStoreAdditions = true;
 		this.name = name;
 		this.meat = meat;
 		this.bread = bread;
@@ -20,6 +22,14 @@ public class Burger {
 
 	public double getBasePrice() {
 		return basePrice;
+	}
+
+	public boolean isCanStoreAdditions() {
+		return canStoreAdditions;
+	}
+	
+	public void disableStoringAdditions(){
+		this.canStoreAdditions = false;
 	}
 
 	public BreadType getBread() {
@@ -43,7 +53,7 @@ public class Burger {
 	}
 	
 	public String acceptAddition(Addition addition){
-		if(getNumberOfAdditions()<4){
+		if(getNumberOfAdditions()<4 && isCanStoreAdditions()){
 			if(additions.containsKey(addition)){
 				additions.put(addition, additions.get(addition)+1);
 			}else{
