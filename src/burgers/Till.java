@@ -117,4 +117,9 @@ public class Till {
 		}
 		return "Voucher is not valid for any of the products";
 	}
+	
+	public double calculateChipsPrice(Chips chips){
+		double result = chips.getBasePrice();
+		return result += (chips.getBasePrice()*chips.getSize().getPriceProportion());
+	}
 }
