@@ -11,5 +11,4 @@ public class DeluxeBurger extends Burger{
 	public String acceptAddition(Addition addition){
 		return "This burger cannot have additions";
 	}
-
 }
