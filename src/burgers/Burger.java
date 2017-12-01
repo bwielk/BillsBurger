@@ -7,8 +7,8 @@ public class Burger {
 	protected String name;
 	protected MeatType meat;
 	protected BreadType bread;
-	protected double basePrice;
-	protected EnumMap<Addition, Integer> additions;
+	private double basePrice;
+	private EnumMap<Addition, Integer> additions;
 	
 	public Burger(String name, MeatType meat, BreadType bread){
 		this.name = name;
