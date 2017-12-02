@@ -1,6 +1,6 @@
 package burgers;
 
-public class Chips {
+public class Chips implements Productable{
 	
 	private String name;
 	private ChipsSize size;
@@ -24,5 +24,4 @@ public class Chips {
 		return basePrice;
 	}
 	
-
 }

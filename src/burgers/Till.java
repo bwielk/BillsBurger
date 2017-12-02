@@ -48,6 +48,18 @@ public class Till {
 	}
 	
 	public double calculateBurgerPrice(Burger burger){
+		if(burger.getClass() == DeluxeBurger.class){
+			DeluxeBurger deluxeBurger = (DeluxeBurger)burger;
+			if(deluxeBurger.getDeluxeAdditions().size() == 0){
+				return burger.getBasePrice();
+			}else{
+				for(Productable product : deluxeBurger.getDeluxeAdditions().keySet()){
+					if(product.getClass() == Drink.class){
+						return 3.50;
+					}
+				}
+			}
+		}
 		double totalPrice = 0.0;
 		for(Addition addition : burger.getAdditions().keySet()){
 			totalPrice += addition.getPrice()*((burger.getAdditions().get(addition)));

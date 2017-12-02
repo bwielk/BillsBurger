@@ -1,6 +1,6 @@
 package burgers;
 
-public class Drink {
+public class Drink implements Productable{
 	
 	private String name;
 	private double price;

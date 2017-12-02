@@ -27,6 +27,11 @@ public class DeluxeBurgerTest{
 	}
 	
 	@Test
+	public void DeluxeBurgerWithNoDeluxeAdditions(){
+		assertEquals(3.00, till.calculateBurgerPrice(burger), 0.1);
+	}
+	
+	@Test
 	public void DeluxeBurgerCanAcceptDrink(){
 		burger.acceptAddition(drink1);
 		assertEquals(3.50, till.calculateBurgerPrice(burger), 0.1);

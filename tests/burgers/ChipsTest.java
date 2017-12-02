@@ -13,6 +13,7 @@ public class ChipsTest {
 	@Before
 	public void before(){
 		chips = new Chips("Portion of chips", ChipsSize.MEDIUM, 1.50);
+		till = new Till();
 	}
 	
 	@Test
@@ -32,7 +33,7 @@ public class ChipsTest {
 	}
 	
 	@Test
-	public void tillsCanCalculateProperPrice(){
+	public void tillsCanCalculateChipsPropoerPrice(){
 		assertEquals(2.25, till.calculateChipsPrice(chips), 0.1);
 	}
 
