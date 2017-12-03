@@ -84,6 +84,7 @@ public class Till {
 	
 	public void newTransaction(){
 		this.burgers.clear();
+		this.products.clear();
 	}
 	
 	public int getNumberOfItems(){
@@ -105,6 +106,19 @@ public class Till {
 			return "No such product on the transaction list";
 		}
 		return burger.getName() + " has been removed";
+	}
+	
+	public String removeProduct(Productable product){
+		if(this.products.containsKey(product)){
+			if(this.products.get(product) >1){
+				this.products.put(product, this.products.get(product)-1);
+			}else if(this.products.get(product) == 1){
+				this.products.remove(product);
+			}
+		}else{
+			return "No such product on the transaction list";
+		}
+		return product.getName() + " has been removed";
 	}
 	
 	public BigDecimal calculateTransaction(){
