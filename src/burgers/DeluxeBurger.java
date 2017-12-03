@@ -17,17 +17,19 @@ public class DeluxeBurger extends Burger{
 	}
 	
 	public String acceptDeluxeAddition(Productable product){
+		System.out.println("Method started");
 		if(product.getClass() == Chips.class){
 			Chips chips = (Chips)product;
-			if(chips.getSize()== ChipsSize.SMALL){
+			if(chips.getSize() == ChipsSize.SMALL){
 				getDeluxeAdditions().put(chips, 1);
 			}
 		}else if(product.getClass() == Drink.class){
 			Drink drink = (Drink)product;
-			if(drink.getSize()== DrinkSize.SMALL){
+			if(drink.getSize() == DrinkSize.SMALL){
 				getDeluxeAdditions().put(drink, 1);
 			}
 		}
+		System.out.println("Method complete");
 		return "The product cannot be added";
 	}
 }

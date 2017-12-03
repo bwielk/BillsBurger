@@ -132,7 +132,25 @@ public class Till {
 		return result += (chips.getPrice()*chips.getSize().getPriceProportion());
 	}
 	
-	public void addDeluxeAddition(DeluxeBurger burger, Productable product){
-		
+	public String addDeluxeAddition(DeluxeBurger burger, Productable product){
+		//boolean hasADrink = false;
+		//boolean hasChips = false;
+		if(burger.getDeluxeAdditions().size() == 0){
+			burger.acceptDeluxeAddition(product);
+		}else{
+			for(Productable item : burger.getDeluxeAdditions().keySet()){
+				if(item.getClass() == Chips.class && burger.getDeluxeAdditions().get(item) == 1){
+					if(product.getClass() == Drink.class){
+						burger.acceptDeluxeAddition(product);
+					}
+				}
+				else if(item.getClass() == Drink.class && burger.getDeluxeAdditions().get(item) == 1){
+					if(product.getClass() == Chips.class){
+						burger.acceptDeluxeAddition(product);
+					}
+				}
+			}
+		}
+		return "The Deluxe Deal already contains this item";
 	}
 }
