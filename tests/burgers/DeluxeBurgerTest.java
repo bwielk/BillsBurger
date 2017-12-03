@@ -55,26 +55,39 @@ public class DeluxeBurgerTest{
 	@Test
 	public void DeluxeBurgerCanStoreOnly1Drink(){
 		till.addDeluxeAddition(burger, drink1);
+		assertEquals(3.50, till.calculateBurgerPrice(burger), 0.1);
 		assertEquals("The Deluxe Deal already contains this item", till.addDeluxeAddition(burger, drink1));
 	}
 	
 	@Test
 	public void DeluxeBurgerCanStoreOnly1PortionOfChips(){
 		till.addDeluxeAddition(burger, chips1);
+		assertEquals(3.50, till.calculateBurgerPrice(burger), 0.1);
 		assertEquals("The Deluxe Deal already contains this item", till.addDeluxeAddition(burger, chips2));
 	}
 	
 	@Test
-	public void DeluxeBurgerCanStoreChipsAndADrink(){
+	public void DeluxeBurgerCanStoreChipsAndADrinkTestA(){
 		till.addDeluxeAddition(burger, drink1);
 		till.addDeluxeAddition(burger, chips1);
+		assertEquals(4.00, till.calculateBurgerPrice(burger), 0.1);
 		assertEquals(2, burger.getDeluxeAdditions().size());
 	}
+	
+	@Test
+	public void DeluxeBurgerCanStoreChipsAndADrinkTestB(){
+		till.addDeluxeAddition(burger, chips1);
+		till.addDeluxeAddition(burger, drink1);
+		assertEquals(4.00, till.calculateBurgerPrice(burger), 0.1);
+		assertEquals(2, burger.getDeluxeAdditions().size());
+	}
+	
 	
 	@Test
 	public void TillTransafersOnlySmallDrinkToTheDeluxeDeal(){
 		till.addDeluxeAddition(burger, drink1);
 		till.addDeluxeAddition(burger, drink2);
+		assertEquals(3.50, till.calculateBurgerPrice(burger), 0.1);
 		assertEquals(1, burger.getDeluxeAdditions().size());
 	}
 	
@@ -82,6 +95,7 @@ public class DeluxeBurgerTest{
 	public void TillTransafersOnlySmallChipsToTheDeluxeDeal(){
 		till.addDeluxeAddition(burger, chips1);
 		till.addDeluxeAddition(burger, chips2);
+		assertEquals(3.50, till.calculateBurgerPrice(burger), 0.1);
 		assertEquals(1, burger.getDeluxeAdditions().size());
 	}
 }

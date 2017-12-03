@@ -133,8 +133,6 @@ public class Till {
 	}
 	
 	public String addDeluxeAddition(DeluxeBurger burger, Productable product){
-		//boolean hasADrink = false;
-		//boolean hasChips = false;
 		if(burger.getDeluxeAdditions().size() == 0){
 			burger.acceptDeluxeAddition(product);
 		}else{
