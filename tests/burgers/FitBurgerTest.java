@@ -20,7 +20,7 @@ public class FitBurgerTest{
 
 	@Test
 	public void fitBurgerInheritsBasePrice(){
-		assertEquals(3.00, burger.getBasePrice(), 0.1);
+		assertEquals(3.00, burger.getPrice(), 0.1);
 	}
 	
 	@Test

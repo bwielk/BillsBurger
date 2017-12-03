@@ -35,7 +35,7 @@ public class BurgerTest {
 	
 	@Test
 	public void burgerHasBasePrice(){
-		double result = burger.getBasePrice();
+		double result = burger.getPrice();
 		assertEquals(3.00, result, 0.1);
 	}
 	

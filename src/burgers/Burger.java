@@ -2,7 +2,7 @@ package burgers;
 
 import java.util.*;
 
-public class Burger{
+public class Burger implements Productable{
 	
 	protected boolean canStoreAdditions;
 	protected String name;
@@ -20,7 +20,7 @@ public class Burger{
 		this.additions = new EnumMap<Addition, Integer>(Addition.class);
 	}
 
-	public double getBasePrice() {
+	public double getPrice() {
 		return basePrice;
 	}
 

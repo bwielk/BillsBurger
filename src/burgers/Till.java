@@ -52,7 +52,7 @@ public class Till {
 			DeluxeBurger deluxeBurger = (DeluxeBurger)burger;
 			int numOfProducts = deluxeBurger.getDeluxeAdditions().size();
 			switch(numOfProducts){
-			case 0: return burger.getBasePrice();
+			case 0: return burger.getPrice();
 			case 1: return 3.50;
 			case 2: return 4.00;
 			}
@@ -61,10 +61,10 @@ public class Till {
 		for(Addition addition : burger.getAdditions().keySet()){
 			totalPrice += addition.getPrice()*((burger.getAdditions().get(addition)));
 		}
-		return totalPrice += burger.getBasePrice();
+		return totalPrice += burger.getPrice();
 	}
 	
-	public void addProduct(Burger burger){
+	public void addBurger(Burger burger){
 		if(this.burgers.containsKey(burger)){
 			this.burgers.put(burger, this.burgers.get(burger)+1);
 		}else{
