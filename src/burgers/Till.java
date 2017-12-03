@@ -7,14 +7,14 @@ public class Till {
 
 	private double income;
 	private int soldBurgers;
-	private HashMap<Burger, Integer> transaction;
+	private HashMap<Burger, Integer> burgers;
 	private int processedTransactions;
 	private ArrayList<Voucherable> usedVouchers;
 	
 	public Till(){
 		this.income = 0;
 		this.soldBurgers = 0;
-		this.transaction = new HashMap<Burger, Integer>();
+		this.burgers = new HashMap<Burger, Integer>();
 		this.processedTransactions = 0;
 		this.usedVouchers = new ArrayList<Voucherable>();
 	}
@@ -27,8 +27,8 @@ public class Till {
 		return income;
 	}
 	
-	public HashMap<Burger, Integer> getTransaction() {
-		return transaction;
+	public HashMap<Burger, Integer> getBurgers() {
+		return burgers;
 	}
 
 	public int numOfProcessedTransactions() {
@@ -65,31 +65,31 @@ public class Till {
 	}
 	
 	public void addProduct(Burger burger){
-		if(this.transaction.containsKey(burger)){
-			this.transaction.put(burger, this.transaction.get(burger)+1);
+		if(this.burgers.containsKey(burger)){
+			this.burgers.put(burger, this.burgers.get(burger)+1);
 		}else{
-			this.transaction.put(burger, 1);
+			this.burgers.put(burger, 1);
 		}
 	}
 	
 	public void newTransaction(){
-		this.transaction.clear();
+		this.burgers.clear();
 	}
 	
 	public int getNumberOfItems(){
 		int total = 0;
-		for(Burger product : this.transaction.keySet()){
-			total += (int)this.transaction.get(product);
+		for(Burger product : this.burgers.keySet()){
+			total += (int)this.burgers.get(product);
 		}
 		return total;
 	}
 	
-	public String removeProduct(Burger burger){
-		if(this.transaction.containsKey(burger)){
-			if(this.transaction.get(burger) >1){
-				this.transaction.put(burger, this.transaction.get(burger)-1);
-			}else if(this.transaction.get(burger) == 1){
-				this.transaction.remove(burger);
+	public String removeBurger(Burger burger){
+		if(this.burgers.containsKey(burger)){
+			if(this.burgers.get(burger) >1){
+				this.burgers.put(burger, this.burgers.get(burger)-1);
+			}else if(this.burgers.get(burger) == 1){
+				this.burgers.remove(burger);
 			}
 		}else{
 			return "No such product on the transaction list";
@@ -99,8 +99,8 @@ public class Till {
 	
 	public BigDecimal calculateTransaction(){
 		BigDecimal value = new BigDecimal("0.0");
-		for(Burger product : this.transaction.keySet()){
-			for(int i=0; i<(int)(this.transaction.get(product)); i++){
+		for(Burger product : this.burgers.keySet()){
+			for(int i=0; i<(int)(this.burgers.get(product)); i++){
 				double price = calculateBurgerPrice(product);
 				this.income += (double) price;
 				value = value.add(new BigDecimal("" + price + ""));
@@ -116,9 +116,9 @@ public class Till {
 	}
 	
 	public String completeTransactionWithVoucher(Voucherable voucher){
-		for(Burger product : this.transaction.keySet()){
+		for(Burger product : this.burgers.keySet()){
 			if(calculateBurgerPrice(product) == calculateBurgerPrice(voucher.getValueEquivalent()) && product.getName() == voucher.getValueEquivalent().getName()){
-				removeProduct(product);
+				removeBurger(product);
 				this.processedTransactions += 1;
 				this.usedVouchers.add(voucher);
 				return "The total transaction is £ " + (new BigDecimal(String.format("%.2f", calculateTransaction())));

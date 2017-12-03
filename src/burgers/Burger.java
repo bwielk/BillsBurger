@@ -2,7 +2,7 @@ package burgers;
 
 import java.util.*;
 
-public class Burger {
+public class Burger{
 	
 	protected boolean canStoreAdditions;
 	protected String name;
