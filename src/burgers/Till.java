@@ -50,14 +50,11 @@ public class Till {
 	public double calculateBurgerPrice(Burger burger){
 		if(burger.getClass() == DeluxeBurger.class){
 			DeluxeBurger deluxeBurger = (DeluxeBurger)burger;
-			if(deluxeBurger.getDeluxeAdditions().size() == 0){
-				return burger.getBasePrice();
-			}else{
-				for(Productable product : deluxeBurger.getDeluxeAdditions().keySet()){
-					if(product.getClass() == Drink.class){
-						return 3.50;
-					}
-				}
+			int numOfProducts = deluxeBurger.getDeluxeAdditions().size();
+			switch(numOfProducts){
+			case 0: return burger.getBasePrice();
+			case 1: return 3.50;
+			case 2: return 4.00;
 			}
 		}
 		double totalPrice = 0.0;
@@ -131,7 +128,11 @@ public class Till {
 	}
 	
 	public double calculateChipsPrice(Chips chips){
-		double result = chips.getBasePrice();
-		return result += (chips.getBasePrice()*chips.getSize().getPriceProportion());
+		double result = chips.getPrice();
+		return result += (chips.getPrice()*chips.getSize().getPriceProportion());
+	}
+	
+	public void addDeluxeAddition(DeluxeBurger burger, Productable product){
+		
 	}
 }

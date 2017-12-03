@@ -12,17 +12,22 @@ public class DeluxeBurger extends Burger{
 		disableStoringAdditions();
 	}
 	
-	@Override
-	public String acceptAddition(Addition addition){
-		return "This burger cannot have additions";
-	}
-	
-	public String acceptAddition(Productable product){
-		deluxeAdditions.put(product, 1);
-		return "The product has been added";
-	}
-	
 	public HashMap<Productable, Integer> getDeluxeAdditions(){
 		return this.deluxeAdditions;
+	}
+	
+	public String acceptDeluxeAddition(Productable product){
+		if(product.getClass() == Chips.class){
+			Chips chips = (Chips)product;
+			if(chips.getSize()== ChipsSize.SMALL){
+				getDeluxeAdditions().put(chips, 1);
+			}
+		}else if(product.getClass() == Drink.class){
+			Drink drink = (Drink)product;
+			if(drink.getSize()== DrinkSize.SMALL){
+				getDeluxeAdditions().put(drink, 1);
+			}
+		}
+		return "The product cannot be added";
 	}
 }

@@ -10,12 +10,14 @@ public class DeluxeBurgerTest{
 	private DeluxeBurger burger;
 	private Till till;
 	private Drink drink1;
+	private Drink drink2;
 	
 	@Before
 	public void before(){
 		burger = new DeluxeBurger("Deluxe Beef", MeatType.BEEF, BreadType.WHEAT);
 		till = new Till();
 		drink1 = new Drink("Coca Cola", 1.00, DrinkType.SOFT, DrinkSize.SMALL);
+		drink2 = new Drink("Coca Cola Zero", 1.50, DrinkType.SOFT, DrinkSize.MEDIUM);
 	}
 	
 	@Test
@@ -33,7 +35,20 @@ public class DeluxeBurgerTest{
 	
 	@Test
 	public void DeluxeBurgerCanAcceptDrink(){
-		burger.acceptAddition(drink1);
+		burger.acceptDeluxeAddition(drink1);
 		assertEquals(3.50, till.calculateBurgerPrice(burger), 0.1);
+	}
+	
+	@Test
+	public void DeluxeBurgerCanOnlyAcceptSmallDrink(){
+		burger.acceptDeluxeAddition(drink2);
+		assertEquals(3.00, till.calculateBurgerPrice(burger), 0.1);
+		burger.acceptDeluxeAddition(drink1);
+		assertEquals(3.50, till.calculateBurgerPrice(burger), 0.1);
+	}
+	
+	@Test
+	public void DeluxeBurgerCanStoreOnly1Drink(){
+		
 	}
 }

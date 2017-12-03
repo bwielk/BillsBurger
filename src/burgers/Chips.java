@@ -20,7 +20,7 @@ public class Chips implements Productable{
 		return size;
 	}
 	
-	public double getBasePrice(){
+	public double getPrice(){
 		return basePrice;
 	}
 	

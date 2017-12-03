@@ -4,12 +4,12 @@ import java.util.*;
 
 public class Burger {
 	
-	private boolean canStoreAdditions;
+	protected boolean canStoreAdditions;
 	protected String name;
 	protected MeatType meat;
 	protected BreadType bread;
-	private double basePrice;
-	private EnumMap<Addition, Integer> additions;
+	protected double basePrice;
+	protected EnumMap<Addition, Integer> additions;
 	
 	public Burger(String name, MeatType meat, BreadType bread){
 		this.canStoreAdditions = true;

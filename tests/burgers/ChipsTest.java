@@ -29,7 +29,7 @@ public class ChipsTest {
 	
 	@Test
 	public void chipsHaveBasePrice(){
-		assertEquals(1.50, chips.getBasePrice(), 0.1);
+		assertEquals(1.50, chips.getPrice(), 0.1);
 	}
 	
 	@Test
