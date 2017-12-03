@@ -289,4 +289,62 @@ public class TillTest{
 		assertEquals(1, till1.numOfProcessedTransactions());
 		assertEquals(7, till1.getSoldBurgers());
 	}
+	
+	@Test
+	public void tillCanProcessMultipleTimesOfBurgersAtOnceWithVoucher(){
+		till1.newTransaction();
+		till1.addBurger(burger1);
+		till1.addBurger(burger2);
+		till1.addBurger(burger3);
+		till1.addBurger(fitBurger1);
+		till1.addBurger(fitBurger2);
+		till1.addBurger(deluxeBurger1);
+		till1.addBurger(deluxeBurger2);
+		till1.completeTransactionWithVoucher(voucher1);
+		assertEquals(23.80, till1.getIncome(), 0.1);
+		assertEquals(1, till1.numOfProcessedTransactions());
+		assertEquals(6, till1.getSoldBurgers());
+	}
+	
+	@Test
+	public void tillCanSellADrinksAndChipsWithAClassicBurger(){
+		till1.newTransaction();
+		till1.addBurger(burger1);//3.00
+		till1.addBurger(burger1);//3.00
+		till1.addBurger(deluxeBurger1);//3.5
+		till1.addProduct(drink1);//1
+		till1.addProduct(drink2);//1.50
+		till1.addProduct(chips2);//1.95
+		till1.completeTransaction();
+		assertEquals(13.95, till1.getIncome(), 0.1);
+		assertEquals(1, till1.numOfProcessedTransactions());
+		assertEquals(3, till1.getSoldBurgers());
+	}
+	
+	@Test
+	public void tillCanSellADrinksAndChipsWithVariousBurgers(){
+		till1.newTransaction();
+		till1.addBurger(burger1);//3.00
+		till1.addBurger(burger1);//3.00
+		till1.addBurger(fitBurger1);//3.6
+		till1.addBurger(fitBurger2);//3.8
+		till1.addBurger(deluxeBurger1);//3.5
+		till1.addBurger(deluxeBurger2);//4.0
+		till1.addBurger(deluxeBurger2);//4.0
+		till1.addBurger(deluxeBurger2);//4.0
+		till1.addProduct(drink1);//1
+		till1.addProduct(drink1);//1
+		till1.addProduct(drink1);//1
+		till1.addProduct(drink2);//1.5
+		till1.addProduct(drink2);//1.5
+		till1.addProduct(drink2);//1.5
+		till1.addProduct(chips2);//1.95
+		till1.addProduct(chips2);//1.95
+		till1.addProduct(chips2);//1.95
+		till1.addProduct(chips2);//1.95
+		till1.completeTransaction();
+		assertEquals(44.20, till1.getIncome(), 0.1);
+		assertEquals(1, till1.numOfProcessedTransactions());
+		assertEquals(8, till1.getSoldBurgers());
+	}
 }

@@ -17,7 +17,6 @@ public class DeluxeBurger extends Burger{
 	}
 	
 	public String acceptDeluxeAddition(Productable product){
-		System.out.println("Method started");
 		if(product.getClass() == Chips.class){
 			Chips chips = (Chips)product;
 			if(chips.getSize() == ChipsSize.SMALL){
@@ -29,7 +28,6 @@ public class DeluxeBurger extends Burger{
 				getDeluxeAdditions().put(drink, 1);
 			}
 		}
-		System.out.println("Method complete");
 		return "The product cannot be added";
 	}
 }

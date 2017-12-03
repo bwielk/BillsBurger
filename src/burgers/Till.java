@@ -10,6 +10,7 @@ public class Till {
 	private HashMap<Burger, Integer> burgers;
 	private int processedTransactions;
 	private ArrayList<Voucherable> usedVouchers;
+	private HashMap<Productable, Integer> products;
 	
 	public Till(){
 		this.income = 0;
@@ -17,6 +18,7 @@ public class Till {
 		this.burgers = new HashMap<Burger, Integer>();
 		this.processedTransactions = 0;
 		this.usedVouchers = new ArrayList<Voucherable>();
+		this.products = new HashMap<Productable, Integer>();
 	}
 	
 	public int getUsedVouchers() {
@@ -72,6 +74,14 @@ public class Till {
 		}
 	}
 	
+	public void addProduct(Productable product){
+		if(this.products.containsKey(product)){
+			this.products.put(product, this.products.get(product)+1);
+		}else{
+			this.products.put(product, 1);
+		}
+	}
+	
 	public void newTransaction(){
 		this.burgers.clear();
 	}
@@ -99,12 +109,25 @@ public class Till {
 	
 	public BigDecimal calculateTransaction(){
 		BigDecimal value = new BigDecimal("0.0");
-		for(Burger product : this.burgers.keySet()){
-			for(int i=0; i<(int)(this.burgers.get(product)); i++){
-				double price = calculateBurgerPrice(product);
+		for(Burger burger : this.burgers.keySet()){
+			for(int i=0; i<(int)(this.burgers.get(burger)); i++){
+				double price = calculateBurgerPrice(burger);
 				this.income += (double) price;
 				value = value.add(new BigDecimal("" + price + ""));
 				this.soldBurgers += 1;
+			}
+		}
+		for(Productable product : this.products.keySet()){
+			for(int i=0; i<(int)(this.products.get(product)); i++){
+				if(product.getClass() == Chips.class){
+					Chips chips = (Chips)product;
+					double chipsPrice = calculateChipsPrice(chips);
+					this.income += (double) chipsPrice;
+					value = value.add(new BigDecimal("" + chipsPrice + ""));
+				}else if(product.getClass() == Drink.class){
+					double drinkPrice = product.getPrice();
+					this.income += (double) drinkPrice;
+				}
 			}
 		}
 		return value;
