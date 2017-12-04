@@ -147,9 +147,12 @@ public class Till {
 		return value;
 	}
 	
-	public String completeTransaction(){
+	public Receipt completeTransaction(){
 		this.processedTransactions += 1;
-		return "The total transaction is £ " + (new BigDecimal(String.format("%.2f", calculateTransaction())));
+		Receipt receipt = new Receipt();
+		receipt.setTotal("The total transaction is £ " + (new BigDecimal(String.format("%.2f", calculateTransaction()))));
+		receipt.setPaid();
+		return receipt;
 	}
 	
 	public String completeTransactionWithVoucher(Voucherable voucher){

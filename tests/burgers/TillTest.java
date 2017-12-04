@@ -216,7 +216,7 @@ public class TillTest{
 		till1.addBurger(burger1);//3
 		till1.addBurger(burger2);//4.6
 		till1.addBurger(burger3);//4.3
-		assertEquals("The total transaction is £ 11.90", till1.completeTransaction());
+		assertEquals("The total transaction is £ 11.90", till1.completeTransaction().getTotal());
 	}
 	
 	@Test
@@ -227,10 +227,10 @@ public class TillTest{
 		till1.addBurger(burger2);//4.6
 		till1.addBurger(burger3);//4.3
 		till1.addBurger(burger3);//4.3
-		assertEquals("The total transaction is £ 19.20", till1.completeTransaction());
+		assertEquals("The total transaction is £ 19.20", till1.completeTransaction().getTotal());
 		till1.removeBurger(burger3);
 		till1.removeBurger(burger1);
-		assertEquals("The total transaction is £ 11.90", till1.completeTransaction());
+		assertEquals("The total transaction is £ 11.90", till1.completeTransaction().getTotal());
 	}
 	
 	@Test
@@ -404,5 +404,11 @@ public class TillTest{
 		assertEquals(35.30, till1.getIncome(), 0.1);
 		assertEquals(1, till1.numOfProcessedTransactions());
 		assertEquals(7, till1.getSoldBurgers());
+	}
+	
+	@Test
+	public void canReleaseAReceipt(){
+		Receipt receipt = till1.completeTransaction();
+		assertEquals(Receipt.class, receipt.getClass());
 	}
 }
