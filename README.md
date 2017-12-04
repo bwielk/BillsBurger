@@ -24,6 +24,11 @@ My Trello board with the MVP requirements and additional functionality:
 ![2017-12-04 11_45_26-burgers _ trello](https://user-images.githubusercontent.com/22578898/33549891-52066c32-d8ec-11e7-89a8-dda22d1aa4c0.png)
 ![2017-12-04 11_46_34-burgers _ trello](https://user-images.githubusercontent.com/22578898/33549894-537872c2-d8ec-11e7-8082-888c499b34ac.png)
 
+Testing
+- unit testing
+- regression testing
+- integration testing
+
 The TDD approach while building the software was contantly in use: 
 ![2017-12-04 11_49_04-workspace - myfavview - billsburger_src_burgers_receipt java - eclipse](https://user-images.githubusercontent.com/22578898/33549895-54af0214-d8ec-11e7-9ddc-aa925d9b439e.png)
 
