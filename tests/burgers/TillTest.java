@@ -117,45 +117,66 @@ public class TillTest{
 		till1.addBurger(burger1);
 		BigDecimal result1 = new BigDecimal("3.8");
 		assertEquals(result1, till1.calculateTransaction());
-		Burger copyBurger = new ArrayList<Burger>(till1.getBurgers().keySet()).get(0);
-		till1.addAddition(copyBurger, Addition.HALOUMI);//0.5
-		till1.addAddition(copyBurger, Addition.PEPPERS);//0.3
-		assertEquals(4, copyBurger.getNumberOfAdditions());
-		till1.addBurger(copyBurger);
-		BigDecimal result2 = new BigDecimal("9.2");
+		Burger burger1 = new ArrayList<Burger>(till1.getBurgers().keySet()).get(0);
+		till1.getBurgers().remove(burger1);
+		till1.addAddition(burger1, Addition.HALOUMI);//0.5
+		till1.addAddition(burger1, Addition.PEPPERS);//0.3
+		assertEquals(4, burger1.getNumberOfAdditions());
+		till1.addBurger(burger1);
+		BigDecimal result2 = new BigDecimal("4.6");
 		assertEquals(result2, till1.calculateTransaction());
 	}
 	
 	@Test
 	public void tillCanCalculateTheValueOfTheBurgerWithTheSameAdditions2A(){
+		till1.newTransaction();
 		till1.addAddition(burger1, Addition.HALOUMI);//0.5
 		till1.addAddition(burger1, Addition.HALOUMI);//0.5
-		assertEquals(4.0, till1.calculateBurgerPrice(burger1), 0.1);
+		till1.addBurger(burger1);
+		BigDecimal result1 = new BigDecimal("4.0");
+		assertEquals(result1, till1.calculateTransaction());
+		Burger burger1 = new ArrayList<Burger>(till1.getBurgers().keySet()).get(0);
+		till1.getBurgers().remove(burger1);
 		till1.addAddition(burger1, Addition.PEPPERS);//0.3
 		till1.addAddition(burger1, Addition.PEPPERS);//0.3
+		till1.addBurger(burger1);
 		assertEquals(4, burger1.getNumberOfAdditions());
-		assertEquals(4.60, till1.calculateBurgerPrice(burger1), 0.1);
+		BigDecimal result2 = new BigDecimal("4.6");
+		assertEquals(result2, till1.calculateTransaction());
 	}
 	
 	public void tillCanCalculateTheValueOfTheBurgerWithTheSameAdditions2B(){
+		till1.newTransaction();
 		till1.addAddition(burger1, Addition.PEPPERS);//0.3
 		till1.addAddition(burger1, Addition.PEPPERS);//0.3
-		assertEquals(3.6, till1.calculateBurgerPrice(burger1), 0.1);
+		BigDecimal result1 = new BigDecimal("3.6");
+		assertEquals(result1, till1.calculateTransaction());
+		Burger burger1 = new ArrayList<Burger>(till1.getBurgers().keySet()).get(0);
+		till1.getBurgers().remove(burger1);
 		till1.addAddition(burger1, Addition.HALOUMI);//0.5
 		till1.addAddition(burger1, Addition.HALOUMI);//0.5
+		till1.addBurger(burger1);
+		BigDecimal result2 = new BigDecimal("4.6");
 		assertEquals(4, burger1.getNumberOfAdditions());
-		assertEquals(4.60, till1.calculateBurgerPrice(burger1), 0.1);
+		assertEquals(result2, till1.calculateTransaction());
 	}
 	
 	@Test
 	public void tillCanCalculateTheValueOfTheBurgerWithTheSameAdditions3(){
+		till1.newTransaction();
 		till1.addAddition(burger1, Addition.HALOUMI);//0.5
 		till1.addAddition(burger1, Addition.SALAD);//0.3
-		assertEquals(3.80, till1.calculateBurgerPrice(burger1), 0.1);
+		till1.addBurger(burger1);
+		BigDecimal result1 = new BigDecimal("3.8");
+		assertEquals(result1, till1.calculateTransaction());
+		Burger burger1 = new ArrayList<Burger>(till1.getBurgers().keySet()).get(0);
+		till1.getBurgers().remove(burger1);
 		till1.addAddition(burger1, Addition.PEPPERS);//0.3
 		till1.addAddition(burger1, Addition.PEPPERS);//0.3
+		till1.addBurger(burger1);
 		assertEquals(4, burger1.getNumberOfAdditions());
-		assertEquals(4.40, till1.calculateBurgerPrice(burger1), 0.1);
+		BigDecimal result2 = new BigDecimal("4.4");
+		assertEquals(result2, till1.calculateTransaction());
 	}
 	
 	@Test
