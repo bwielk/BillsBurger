@@ -2,6 +2,9 @@ package burgers;
 
 import static org.junit.Assert.*;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -97,22 +100,30 @@ public class TillTest{
 	public void tillCanCalculateTheValueOfTheBurger(){
 		till1.addAddition(burger1, Addition.HALOUMI);//0.5
 		till1.addAddition(burger1, Addition.SALAD);//0.3
-		assertEquals(3.80, till1.calculateBurgerPrice(burger1), 0.1);
+		//assertEquals("3.80", till1.calculateTransaction());
 		till1.addAddition(burger1, Addition.TOMATO);//0.3
 		till1.addAddition(burger1, Addition.PEPPERS);//0.3
+		till1.addBurger(burger1);
 		assertEquals(4, burger1.getNumberOfAdditions());
-		assertEquals(4.40, till1.calculateBurgerPrice(burger1), 0.1);
+		BigDecimal result = new BigDecimal("4.4");
+		assertEquals(result, till1.calculateTransaction());
 	}
 	
 	@Test
 	public void tillCanCalculateTheValueOfTheBurgerWithTheSameAdditions(){
+		till1.newTransaction();
 		till1.addAddition(burger1, Addition.HALOUMI);//0.5
 		till1.addAddition(burger1, Addition.PEPPERS);//0.3
-		assertEquals(3.80, till1.calculateBurgerPrice(burger1), 0.1);
-		till1.addAddition(burger1, Addition.HALOUMI);//0.5
-		till1.addAddition(burger1, Addition.PEPPERS);//0.3
-		assertEquals(4, burger1.getNumberOfAdditions());
-		assertEquals(4.60, till1.calculateBurgerPrice(burger1), 0.1);
+		till1.addBurger(burger1);
+		BigDecimal result1 = new BigDecimal("3.8");
+		assertEquals(result1, till1.calculateTransaction());
+		Burger copyBurger = new ArrayList<Burger>(till1.getBurgers().keySet()).get(0);
+		till1.addAddition(copyBurger, Addition.HALOUMI);//0.5
+		till1.addAddition(copyBurger, Addition.PEPPERS);//0.3
+		assertEquals(4, copyBurger.getNumberOfAdditions());
+		till1.addBurger(copyBurger);
+		BigDecimal result2 = new BigDecimal("9.2");
+		assertEquals(result2, till1.calculateTransaction());
 	}
 	
 	@Test

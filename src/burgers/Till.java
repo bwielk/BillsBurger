@@ -45,11 +45,11 @@ public class Till {
 		burger.acceptAddition(addition);
 	}
 	
-	public void useVoucher(Voucher voucher){
+	private void useVoucher(Voucherable voucher){
 		voucher.validate();
 	}
 	
-	public double calculateBurgerPrice(Burger burger){
+	private double calculateBurgerPrice(Burger burger){
 		if(burger.getClass() == DeluxeBurger.class){
 			DeluxeBurger deluxeBurger = (DeluxeBurger)burger;
 			int numOfProducts = deluxeBurger.getDeluxeAdditions().size();
@@ -157,9 +157,10 @@ public class Till {
 	
 	public String completeTransactionWithVoucher(Voucherable voucher){
 		for(Burger product : this.burgers.keySet()){
-			if(calculateBurgerPrice(product) == calculateBurgerPrice(voucher.getValueEquivalent()) && product.getName() == voucher.getValueEquivalent().getName()){
+			if(calculateBurgerPrice(product) == calculateBurgerPrice(voucher.getValueEquivalent()) && product.getName() == voucher.getValueEquivalent().getName() && voucher.isValid()){
 				removeBurger(product);
 				this.processedTransactions += 1;
+				useVoucher(voucher);
 				this.usedVouchers.add(voucher);
 				return "The total transaction is £ " + (new BigDecimal(String.format("%.2f", calculateTransaction())));
 			}
@@ -167,7 +168,7 @@ public class Till {
 		return "Voucher is not valid for any of the products";
 	}
 	
-	public double calculateChipsPrice(Chips chips){
+	private double calculateChipsPrice(Chips chips){
 		double result = chips.getPrice();
 		return result += (chips.getPrice()*chips.getSize().getPriceProportion());
 	}

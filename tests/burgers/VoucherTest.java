@@ -9,22 +9,25 @@ import org.junit.Test;
 public class VoucherTest extends Voucher {
 	
 	private Till till1;
-	private Till till2;
-	private Voucher voucher1;
-	private Voucher voucher2;
+	private FreeClassicBurgerVoucher voucher;
+	private Burger burger1;
+	private Burger burger2;
 	
 	@Before
 	public void before(){
 		till1 = new Till();
-		till2 = new Till();
-		voucher1 = new Voucher();
-		voucher2 = new Voucher();
+		voucher = new FreeClassicBurgerVoucher();
+		burger1 = new Burger("Classic Burger", MeatType.BEEF, BreadType.WHOLEMEAL);//3.0
+		burger2 = new Burger("Beef brgr", MeatType.BEEF, BreadType.RYE);//4.6
 	}
 	
 	@Test
 	public void voucherHasBeenUsed(){
-		till1.useVoucher(voucher1);
-		assertEquals(false, voucher1.isValid());
+		till1.newTransaction();
+		till1.addBurger(burger1);
+		till1.addBurger(burger2);
+		till1.completeTransactionWithVoucher(voucher);
+		assertEquals(false, voucher.isValid());
 	}
 
 }
