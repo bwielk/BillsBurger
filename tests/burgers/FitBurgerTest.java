@@ -2,6 +2,8 @@ package burgers;
 
 import static org.junit.Assert.*;
 
+import java.math.BigDecimal;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -45,8 +47,14 @@ public class FitBurgerTest{
 		till.addAddition(burger2, Addition.TOMATO);
 		till.addAddition(burger, Addition.HALOUMI);
 		till.addAddition(burger, Addition.HALOUMI);
-		assertEquals(3.60, till.calculateBurgerPrice(burger2), 0.1);
-		assertEquals(4.00, till.calculateBurgerPrice(burger), 0.1);
+		till.newTransaction();
+		till.addBurger(burger2);
+		BigDecimal result1 = new BigDecimal("3.6");
+		assertEquals(result1, till.calculateTransaction());
+		BigDecimal result2 = new BigDecimal("4.0");
+		till.newTransaction();
+		till.addBurger(burger);
+		assertEquals(result2, till.calculateTransaction());
 	}
 	
 	@Test
