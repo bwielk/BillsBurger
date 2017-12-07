@@ -121,7 +121,7 @@ public class Till {
 		return product.getName() + " has been removed";
 	}
 	
-	public BigDecimal calculateTransaction(){
+	private BigDecimal calculateTransaction(){
 		BigDecimal value = new BigDecimal("0.0");
 		for(Burger burger : this.burgers.keySet()){
 			for(int i=0; i<(int)(this.burgers.get(burger)); i++){
