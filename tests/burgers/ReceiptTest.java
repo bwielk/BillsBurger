@@ -119,4 +119,31 @@ public class ReceiptTest {
 		till1.addProduct(chips2);//1.95
 		assertEquals("The total transaction is £ 20.30", till1.completeTransaction().getTotal());
 	}
+	
+	@Test
+	public void receiptIsReleasedAfterVoucherTransactionC(){
+		till1.addBurger(burger1);//3
+		till1.addProduct(drink2);//1.50
+		till1.addProduct(drink2);//1.50
+		till1.addProduct(chips1);//1.56
+		till1.addProduct(chips2);//1.95
+		till1.addProduct(chips1);//1.56
+		till1.addBurger(burger1);//3
+		assertEquals("The total transaction is £ 11.07", till1.completeTransactionWithVoucher(voucher1).getTotal());
+	}
+	
+	@Test
+	public void receiptIsReleasedAfterVoucherTransactionD(){
+		till1.addBurger(burger1);//3
+		till1.addProduct(drink1);//1.00
+		till1.addProduct(drink2);//1.50
+		till1.addBurger(deluxeBurger2);//4
+		till1.addProduct(chips1);//1.56
+		till1.addProduct(chips2);//1.95
+		till1.addProduct(chips1);//1.56
+		till1.addBurger(deluxeBurger2);//4
+		till1.addBurger(burger1);//3
+		assertEquals("The total transaction is £ 18.57", till1.completeTransactionWithVoucher(voucher1).getTotal());
+	}
+	
 }
