@@ -47,6 +47,7 @@ public class Till {
 	
 	private void useVoucher(Voucherable voucher){
 		voucher.validate();
+		this.usedVouchers.add(voucher);
 	}
 	
 	private double calculateBurgerPrice(Burger burger){
@@ -139,8 +140,10 @@ public class Till {
 					this.income += (double) chipsPrice;
 					value = value.add(new BigDecimal("" + chipsPrice + ""));
 				}else if(product.getClass() == Drink.class){
-					double drinkPrice = product.getPrice();
+					Drink drink = (Drink)product;
+					double drinkPrice = drink.getPrice();
 					this.income += (double) drinkPrice;
+					value = value.add(new BigDecimal("" + drinkPrice + ""));
 				}
 			}
 		}
@@ -155,22 +158,31 @@ public class Till {
 		return receipt;
 	}
 	
-	public String completeTransactionWithVoucher(Voucherable voucher){
-		for(Burger product : this.burgers.keySet()){
-			if(calculateBurgerPrice(product) == calculateBurgerPrice(voucher.getValueEquivalent()) && product.getName() == voucher.getValueEquivalent().getName() && voucher.isValid()){
-				removeBurger(product);
-				this.processedTransactions += 1;
-				useVoucher(voucher);
-				this.usedVouchers.add(voucher);
-				return "The total transaction is £ " + (new BigDecimal(String.format("%.2f", calculateTransaction())));
+	public Receipt completeTransactionWithVoucher(Voucherable voucher){
+		HashMap<Burger, Integer> temp = new HashMap<Burger, Integer>();
+		for(Burger burger : this.burgers.keySet()){
+			if(calculateBurgerPrice(burger) == calculateBurgerPrice(voucher.getValueEquivalent()) && burger.getName() == voucher.getValueEquivalent().getName() && voucher.isValid()){
+				temp.put(burger, this.burgers.get(burger));
 			}
 		}
-		return "Voucher is not valid for any of the products";
+		
+		if(temp.get(temp.keySet().toArray()[0]) >1){
+			this.burgers.put((Burger)temp.keySet().toArray()[0], this.burgers.get(temp.keySet().toArray()[0])-1);
+		}else if(this.burgers.get(temp.keySet().toArray()[0]) == 1){
+			this.burgers.put((Burger)temp.keySet().toArray()[0], 0);
+		}
+		//this.burgers.keySet().removeIf(burger->(calculateBurgerPrice(burger) == calculateBurgerPrice(voucher.getValueEquivalent()) && burger.getName() == voucher.getValueEquivalent().getName() && voucher.isValid()));
+		this.processedTransactions += 1;
+		Receipt receipt = new Receipt();
+		useVoucher(voucher);
+		receipt.setTotal("The total transaction is £ " + (new BigDecimal(String.format("%.2f", calculateTransaction()))));
+		receipt.setPaid();
+		return receipt;
 	}
 	
 	private double calculateChipsPrice(Chips chips){
 		double result = chips.getPrice();
-		return result += (chips.getPrice()*chips.getSize().getPriceProportion());
+		return result += (chips.getPrice()*(chips.getSize().getPriceProportion()));
 	}
 	
 	public String addDeluxeAddition(DeluxeBurger burger, Productable product){

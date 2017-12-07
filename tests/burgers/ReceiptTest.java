@@ -36,7 +36,7 @@ public class ReceiptTest {
 		drink1 = new Drink("Coca Cola", 1.00, DrinkType.SOFT, DrinkSize.SMALL);
 		drink2 = new Drink("Coca Cola Zero", 1.50, DrinkType.SOFT, DrinkSize.MEDIUM);
 		chips1 = new Chips("French chips", ChipsSize.SMALL, 1.20);
-		chips2 = new Chips("American chips", ChipsSize.MEDIUM, 1.30);
+		chips2 = new Chips("American chips", ChipsSize.MEDIUM, 1.30);//1.95
 		till1.addAddition(burger2, Addition.HALOUMI);
 		till1.addAddition(burger2, Addition.CHEDDAR);
 		till1.addAddition(burger2, Addition.SALAD);
@@ -76,5 +76,47 @@ public class ReceiptTest {
 		till1.addBurger(fitBurger1);//3.6
 		till1.addBurger(deluxeBurger2);//4
 		assertEquals("The total transaction is £ 10.60", till1.completeTransaction().getTotal());
+		assertEquals(true, till1.completeTransaction().isPaid());
+	}
+	
+	@Test
+	public void receiptIsReleasedAfterVoucherTransactionA(){
+		till1.newTransaction();
+		till1.addBurger(deluxeBurger1);//3.5
+		till1.addBurger(deluxeBurger2);//4
+		till1.addBurger(burger1);//3
+		till1.addBurger(fitBurger2);//3.8
+		till1.addBurger(fitBurger1);//3.6
+		till1.addProduct(drink1);//1.00
+		till1.addProduct(drink2);//1.50
+		assertEquals("The total transaction is £ 17.40", till1.completeTransactionWithVoucher(voucher1).getTotal());
+	}
+	
+	@Test
+	public void receiptIsReleasedAfterVoucherTransactionB(){
+		till1.newTransaction();
+		till1.addBurger(burger1);//3
+		till1.addBurger(burger1);//3
+		till1.addBurger(fitBurger2);//3.8
+		till1.addBurger(fitBurger1);//3.6
+		till1.addProduct(drink2);//1.50
+		till1.addProduct(drink2);//1.50
+		till1.addProduct(chips2);//1.95
+		till1.addProduct(chips2);//1.95
+		assertEquals("The total transaction is £ 17.30", till1.completeTransactionWithVoucher(voucher1).getTotal());
+	}
+	
+	@Test
+	public void receiptIsReleasedAfterTransactionVersionB(){
+		till1.newTransaction();
+		till1.addBurger(burger1);//3
+		till1.addBurger(burger1);//3
+		till1.addBurger(fitBurger2);//3.8
+		till1.addBurger(fitBurger1);//3.6
+		till1.addProduct(drink2);//1.50
+		till1.addProduct(drink2);//1.50
+		till1.addProduct(chips2);//1.95
+		till1.addProduct(chips2);//1.95
+		assertEquals("The total transaction is £ 20.30", till1.completeTransaction().getTotal());
 	}
 }
