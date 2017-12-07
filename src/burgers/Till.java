@@ -83,6 +83,26 @@ public class Till {
 		}
 	}
 	
+	public String addDeluxeAddition(DeluxeBurger burger, Productable product){
+		if(burger.getDeluxeAdditions().size() == 0){
+			burger.acceptDeluxeAddition(product);
+		}else{
+			for(Productable item : burger.getDeluxeAdditions().keySet()){
+				if(item.getClass() == Chips.class && burger.getDeluxeAdditions().get(item) == 1){
+					if(product.getClass() == Drink.class){
+						burger.acceptDeluxeAddition(product);
+					}
+				}
+				else if(item.getClass() == Drink.class && burger.getDeluxeAdditions().get(item) == 1){
+					if(product.getClass() == Chips.class){
+						burger.acceptDeluxeAddition(product);
+					}
+				}
+			}
+		}
+		return "The Deluxe Deal already contains this item";
+	}
+	
 	public void newTransaction(){
 		this.burgers.clear();
 		this.products.clear();
@@ -122,7 +142,7 @@ public class Till {
 		return product.getName() + " has been removed";
 	}
 	
-	private BigDecimal calculateTransaction(){
+	private BigDecimal calculateBurgers(){
 		BigDecimal value = new BigDecimal("0.0");
 		for(Burger burger : this.burgers.keySet()){
 			for(int i=0; i<(int)(this.burgers.get(burger)); i++){
@@ -132,6 +152,11 @@ public class Till {
 				this.soldBurgers += 1;
 			}
 		}
+		return value;
+	}
+	
+	private BigDecimal calculateProducts(){
+		BigDecimal value = new BigDecimal("0.0");
 		for(Productable product : this.products.keySet()){
 			for(int i=0; i<(int)(this.products.get(product)); i++){
 				if(product.getClass() == Chips.class){
@@ -150,6 +175,32 @@ public class Till {
 		return value;
 	}
 	
+	private BigDecimal calculateTransaction(){
+		BigDecimal value = new BigDecimal("0.0");
+		value = value.add(new BigDecimal("" + calculateBurgers() + ""));
+		value = value.add(new BigDecimal("" + calculateProducts() + ""));
+		return value;
+	}
+	
+	private double calculateChipsPrice(Chips chips){
+		double result = chips.getPrice();
+		return result += (chips.getPrice()*(chips.getSize().getPriceProportion()));
+	}
+	
+	private void runVoucherForBurger(Voucherable voucher){
+		HashMap<Burger, Integer> temp = new HashMap<Burger, Integer>();
+		for(Burger burger : this.burgers.keySet()){
+			if(calculateBurgerPrice(burger) == calculateBurgerPrice(voucher.getValueEquivalent()) && burger.getName() == voucher.getValueEquivalent().getName() && voucher.isValid()){
+				temp.put(burger, this.burgers.get(burger));
+			}
+		}
+		if(temp.get(temp.keySet().toArray()[0]) >1){
+			this.burgers.put((Burger)temp.keySet().toArray()[0], this.burgers.get(temp.keySet().toArray()[0])-1);
+		}else if(this.burgers.get(temp.keySet().toArray()[0]) == 1){
+			this.burgers.put((Burger)temp.keySet().toArray()[0], 0);
+		}
+	}
+	
 	public Receipt completeTransaction(){
 		this.processedTransactions += 1;
 		Receipt receipt = new Receipt();
@@ -159,49 +210,10 @@ public class Till {
 	}
 	
 	public Receipt completeTransactionWithVoucher(Voucherable voucher){
-		HashMap<Burger, Integer> temp = new HashMap<Burger, Integer>();
-		for(Burger burger : this.burgers.keySet()){
-			if(calculateBurgerPrice(burger) == calculateBurgerPrice(voucher.getValueEquivalent()) && burger.getName() == voucher.getValueEquivalent().getName() && voucher.isValid()){
-				temp.put(burger, this.burgers.get(burger));
-			}
+		if(voucher.getValueEquivalent().getClass() == Burger.class){
+			runVoucherForBurger(voucher);
+			useVoucher(voucher);
 		}
-		
-		if(temp.get(temp.keySet().toArray()[0]) >1){
-			this.burgers.put((Burger)temp.keySet().toArray()[0], this.burgers.get(temp.keySet().toArray()[0])-1);
-		}else if(this.burgers.get(temp.keySet().toArray()[0]) == 1){
-			this.burgers.put((Burger)temp.keySet().toArray()[0], 0);
-		}
-		//this.burgers.keySet().removeIf(burger->(calculateBurgerPrice(burger) == calculateBurgerPrice(voucher.getValueEquivalent()) && burger.getName() == voucher.getValueEquivalent().getName() && voucher.isValid()));
-		this.processedTransactions += 1;
-		Receipt receipt = new Receipt();
-		useVoucher(voucher);
-		receipt.setTotal("The total transaction is £ " + (new BigDecimal(String.format("%.2f", calculateTransaction()))));
-		receipt.setPaid();
-		return receipt;
-	}
-	
-	private double calculateChipsPrice(Chips chips){
-		double result = chips.getPrice();
-		return result += (chips.getPrice()*(chips.getSize().getPriceProportion()));
-	}
-	
-	public String addDeluxeAddition(DeluxeBurger burger, Productable product){
-		if(burger.getDeluxeAdditions().size() == 0){
-			burger.acceptDeluxeAddition(product);
-		}else{
-			for(Productable item : burger.getDeluxeAdditions().keySet()){
-				if(item.getClass() == Chips.class && burger.getDeluxeAdditions().get(item) == 1){
-					if(product.getClass() == Drink.class){
-						burger.acceptDeluxeAddition(product);
-					}
-				}
-				else if(item.getClass() == Drink.class && burger.getDeluxeAdditions().get(item) == 1){
-					if(product.getClass() == Chips.class){
-						burger.acceptDeluxeAddition(product);
-					}
-				}
-			}
-		}
-		return "The Deluxe Deal already contains this item";
+		return completeTransaction();
 	}
 }
