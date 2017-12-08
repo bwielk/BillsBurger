@@ -49,12 +49,10 @@ public class FitBurgerTest{
 		till.addAddition(burger, Addition.HALOUMI);
 		till.newTransaction();
 		till.addBurger(burger2);
-		BigDecimal result1 = new BigDecimal("3.6");
-		assertEquals(result1, till.calculateTransaction());
-		BigDecimal result2 = new BigDecimal("4.0");
+		assertEquals("The total transaction is £ 3.60", till.completeTransaction().getTotal());
 		till.newTransaction();
 		till.addBurger(burger);
-		assertEquals(result2, till.calculateTransaction());
+		assertEquals("The total transaction is £ 4.00", till.completeTransaction().getTotal());
 	}
 	
 	@Test

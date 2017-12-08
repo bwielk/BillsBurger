@@ -105,8 +105,8 @@ public class TillTest{
 		till1.addAddition(burger1, Addition.PEPPERS);//0.3
 		till1.addBurger(burger1);
 		assertEquals(4, burger1.getNumberOfAdditions());
-		BigDecimal result = new BigDecimal("4.4");
-		assertEquals(result, till1.calculateTransaction());
+		till1.completeTransaction();
+		assertEquals(4.4, till1.getIncome(), 0.1);
 	}
 	
 	@Test
@@ -115,16 +115,15 @@ public class TillTest{
 		till1.addAddition(burger1, Addition.HALOUMI);//0.5
 		till1.addAddition(burger1, Addition.PEPPERS);//0.3
 		till1.addBurger(burger1);
-		BigDecimal result1 = new BigDecimal("3.8");
-		assertEquals(result1, till1.calculateTransaction());
+		assertEquals("The total transaction is £ 3.80", till1.completeTransaction().getTotal());
 		Burger burger1 = new ArrayList<Burger>(till1.getBurgers().keySet()).get(0);
 		till1.getBurgers().remove(burger1);
 		till1.addAddition(burger1, Addition.HALOUMI);//0.5
 		till1.addAddition(burger1, Addition.PEPPERS);//0.3
 		assertEquals(4, burger1.getNumberOfAdditions());
 		till1.addBurger(burger1);
-		BigDecimal result2 = new BigDecimal("4.6");
-		assertEquals(result2, till1.calculateTransaction());
+		assertEquals("The total transaction is £ 4.60", till1.completeTransaction().getTotal());
+		assertEquals(8.40, till1.getIncome(), 0.1);
 	}
 	
 	@Test
@@ -133,32 +132,33 @@ public class TillTest{
 		till1.addAddition(burger1, Addition.HALOUMI);//0.5
 		till1.addAddition(burger1, Addition.HALOUMI);//0.5
 		till1.addBurger(burger1);
-		BigDecimal result1 = new BigDecimal("4.0");
-		assertEquals(result1, till1.calculateTransaction());
+		till1.completeTransaction();
+		assertEquals(4.0, till1.getIncome(), 0.1);
 		Burger burger1 = new ArrayList<Burger>(till1.getBurgers().keySet()).get(0);
 		till1.getBurgers().remove(burger1);
 		till1.addAddition(burger1, Addition.PEPPERS);//0.3
 		till1.addAddition(burger1, Addition.PEPPERS);//0.3
 		till1.addBurger(burger1);
 		assertEquals(4, burger1.getNumberOfAdditions());
-		BigDecimal result2 = new BigDecimal("4.6");
-		assertEquals(result2, till1.calculateTransaction());
+		assertEquals(1, till1.getSoldBurgers());
+		assertEquals("The total transaction is £ 4.60", till1.completeTransaction().getTotal());
+		assertEquals(2, till1.getSoldBurgers());
+		assertEquals(8.60, till1.getIncome(), 0.1);
 	}
 	
 	public void tillCanCalculateTheValueOfTheBurgerWithTheSameAdditions2B(){
 		till1.newTransaction();
 		till1.addAddition(burger1, Addition.PEPPERS);//0.3
 		till1.addAddition(burger1, Addition.PEPPERS);//0.3
-		BigDecimal result1 = new BigDecimal("3.6");
-		assertEquals(result1, till1.calculateTransaction());
+		assertEquals("The total transaction is £ 3.60", till1.completeTransaction());
 		Burger burger1 = new ArrayList<Burger>(till1.getBurgers().keySet()).get(0);
-		till1.getBurgers().remove(burger1);
+		till1.removeBurger(burger1);
 		till1.addAddition(burger1, Addition.HALOUMI);//0.5
 		till1.addAddition(burger1, Addition.HALOUMI);//0.5
 		till1.addBurger(burger1);
-		BigDecimal result2 = new BigDecimal("4.6");
+		till1.completeTransaction();
 		assertEquals(4, burger1.getNumberOfAdditions());
-		assertEquals(result2, till1.calculateTransaction());
+		assertEquals(8.20, till1.getIncome(), 0.1);
 	}
 	
 	@Test
@@ -167,16 +167,15 @@ public class TillTest{
 		till1.addAddition(burger1, Addition.HALOUMI);//0.5
 		till1.addAddition(burger1, Addition.SALAD);//0.3
 		till1.addBurger(burger1);
-		BigDecimal result1 = new BigDecimal("3.8");
-		assertEquals(result1, till1.calculateTransaction());
+		assertEquals("The total transaction is £ 3.80", till1.completeTransaction().getTotal());
 		Burger burger1 = new ArrayList<Burger>(till1.getBurgers().keySet()).get(0);
 		till1.getBurgers().remove(burger1);
 		till1.addAddition(burger1, Addition.PEPPERS);//0.3
 		till1.addAddition(burger1, Addition.PEPPERS);//0.3
 		till1.addBurger(burger1);
 		assertEquals(4, burger1.getNumberOfAdditions());
-		BigDecimal result2 = new BigDecimal("4.4");
-		assertEquals(result2, till1.calculateTransaction());
+		assertEquals("The total transaction is £ 4.40", till1.completeTransaction().getTotal());
+		assertEquals(8.20, till1.getIncome(), 0.1);
 	}
 	
 	@Test
@@ -293,7 +292,7 @@ public class TillTest{
 		till1.newTransaction();
 		till1.addBurger(burger2);//4.6
 		till1.addBurger(burger3);//4.3
-		assertEquals("Voucher is not valid for any of the products", till1.completeTransactionWithVoucher(voucher1));
+		assertEquals("The total transaction is £ 8.90", till1.completeTransactionWithVoucher(voucher1));
 		assertEquals(0, till1.getUsedVouchers());
 	}
 	
