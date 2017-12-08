@@ -28,74 +28,93 @@ public class DeluxeBurgerTest{
 	public void DeluxeBurgerDoesntStoreStuff(){
 		till.addAddition(burger, Addition.HALOUMI);
 		till.addAddition(burger, Addition.CHEDDAR);
+		till.addDeluxeAddition(burger, chips1);
 		assertEquals(0, burger.getAdditions().size());
-		assertEquals(3.00, till.calculateBurgerPrice(burger), 0.1);
+		till.addBurger(burger);
+		till.completeTransaction();
+		assertEquals(3.50, till.getIncome(), 0.1);
 	}
 	
 	@Test
 	public void DeluxeBurgerWithNoDeluxeAdditions(){
-		assertEquals(3.00, till.calculateBurgerPrice(burger), 0.1);
+		till.newTransaction();
+		till.addBurger(burger);
+		till.completeTransaction();
+		assertEquals(3.00, till.getIncome(), 0.1);
 	}
 	
 	@Test
 	public void DeluxeBurgerCanAcceptDrink(){
+		till.newTransaction();
 		burger.acceptDeluxeAddition(drink1);
-		assertEquals(3.50, till.calculateBurgerPrice(burger), 0.1);
+		till.addBurger(burger);
+		assertEquals("The total transaction is £ 3.50", till.completeTransaction().getTotal());
 	}
 	
 	@Test
 	public void DeluxeBurgerCanOnlyAcceptSmallDrink(){
+		till.newTransaction();
 		assertEquals("The product cannot be added", burger.acceptDeluxeAddition(drink2));
 		burger.acceptDeluxeAddition(drink2);
-		assertEquals(3.00, till.calculateBurgerPrice(burger), 0.1);
 		burger.acceptDeluxeAddition(drink1);
-		assertEquals(3.50, till.calculateBurgerPrice(burger), 0.1);
+		till.addBurger(burger);
+		assertEquals("The total transaction is £ 3.50", till.completeTransaction().getTotal());
 	}
 	
 	@Test
 	public void DeluxeBurgerCanStoreOnly1Drink(){
 		till.addDeluxeAddition(burger, drink1);
-		assertEquals(3.50, till.calculateBurgerPrice(burger), 0.1);
 		assertEquals("The Deluxe Deal already contains this item", till.addDeluxeAddition(burger, drink1));
 	}
 	
 	@Test
 	public void DeluxeBurgerCanStoreOnly1PortionOfChips(){
 		till.addDeluxeAddition(burger, chips1);
-		assertEquals(3.50, till.calculateBurgerPrice(burger), 0.1);
 		assertEquals("The Deluxe Deal already contains this item", till.addDeluxeAddition(burger, chips2));
 	}
 	
 	@Test
 	public void DeluxeBurgerCanStoreChipsAndADrinkTestA(){
+		till.newTransaction();
 		till.addDeluxeAddition(burger, drink1);
 		till.addDeluxeAddition(burger, chips1);
-		assertEquals(4.00, till.calculateBurgerPrice(burger), 0.1);
+		till.addBurger(burger);
+		assertEquals("The total transaction is £ 4.00", till.completeTransaction().getTotal());
 		assertEquals(2, burger.getDeluxeAdditions().size());
 	}
 	
 	@Test
 	public void DeluxeBurgerCanStoreChipsAndADrinkTestB(){
+		till.newTransaction();
 		till.addDeluxeAddition(burger, chips1);
 		till.addDeluxeAddition(burger, drink1);
-		assertEquals(4.00, till.calculateBurgerPrice(burger), 0.1);
+		till.addBurger(burger);
+		till.completeTransaction();
+		assertEquals(4.00, till.getIncome(), 0.1);
+		assertEquals(1, till.getSoldBurgers());
 		assertEquals(2, burger.getDeluxeAdditions().size());
 	}
 	
 	
 	@Test
 	public void TillTransafersOnlySmallDrinkToTheDeluxeDeal(){
+		till.newTransaction();
 		till.addDeluxeAddition(burger, drink1);
 		till.addDeluxeAddition(burger, drink2);
-		assertEquals(3.50, till.calculateBurgerPrice(burger), 0.1);
+		till.addBurger(burger);
+		assertEquals("The total transaction is £ 3.50", till.completeTransaction().getTotal());
+		assertEquals(3.50, till.getIncome(), 0.1);
 		assertEquals(1, burger.getDeluxeAdditions().size());
 	}
 	
 	@Test
 	public void TillTransafersOnlySmallChipsToTheDeluxeDeal(){
+		till.newTransaction();
 		till.addDeluxeAddition(burger, chips1);
 		till.addDeluxeAddition(burger, chips2);
-		assertEquals(3.50, till.calculateBurgerPrice(burger), 0.1);
+		till.addBurger(burger);
+		till.completeTransaction();
+		assertEquals(3.50, till.getIncome(), 0.1);
 		assertEquals(1, burger.getDeluxeAdditions().size());
 	}
 }

@@ -38,8 +38,8 @@ public class ChipsTest {
 	public void tillsCanCalculateChipsPropoerPrice(){
 		till.newTransaction();
 		till.addProduct(chips);
-		BigDecimal result = new BigDecimal("2.25");
-		assertEquals(result, till.calculateTransaction());
+		assertEquals("The total transaction is £ 2.25", till.completeTransaction().getTotal());
+		assertEquals(2.25, till.getIncome(), 0.1);
 	}
 
 }
