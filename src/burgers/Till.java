@@ -11,6 +11,7 @@ public class Till {
 	private int processedTransactions;
 	private ArrayList<Voucherable> usedVouchers;
 	private HashMap<Productable, Integer> products;
+	private boolean voucherCanBeUsed;
 	
 	public Till(){
 		this.income = 0;
@@ -19,6 +20,7 @@ public class Till {
 		this.processedTransactions = 0;
 		this.usedVouchers = new ArrayList<Voucherable>();
 		this.products = new HashMap<Productable, Integer>();
+		this.voucherCanBeUsed = false;
 	}
 	
 	public int getUsedVouchers() {
@@ -106,6 +108,7 @@ public class Till {
 	public void newTransaction(){
 		this.burgers.clear();
 		this.products.clear();
+		this.voucherCanBeUsed = false;
 	}
 	
 	public int getNumberOfItems(){
@@ -191,13 +194,14 @@ public class Till {
 		HashMap<Burger, Integer> temp = new HashMap<Burger, Integer>();
 		for(Burger burger : this.burgers.keySet()){
 			if(calculateBurgerPrice(burger) == calculateBurgerPrice(voucher.getValueEquivalent()) && burger.getName() == voucher.getValueEquivalent().getName() && voucher.isValid()){
+				this.voucherCanBeUsed = true;
 				temp.put(burger, this.burgers.get(burger));
+				if(temp.get(temp.keySet().toArray()[0]) >1){
+					this.burgers.put((Burger)temp.keySet().toArray()[0], this.burgers.get(temp.keySet().toArray()[0])-1);
+				}else if(this.burgers.get(temp.keySet().toArray()[0]) == 1){
+					this.burgers.put((Burger)temp.keySet().toArray()[0], 0);
+				}
 			}
-		}
-		if(temp.get(temp.keySet().toArray()[0]) >1){
-			this.burgers.put((Burger)temp.keySet().toArray()[0], this.burgers.get(temp.keySet().toArray()[0])-1);
-		}else if(this.burgers.get(temp.keySet().toArray()[0]) == 1){
-			this.burgers.put((Burger)temp.keySet().toArray()[0], 0);
 		}
 	}
 	
@@ -212,7 +216,9 @@ public class Till {
 	public Receipt completeTransactionWithVoucher(Voucherable voucher){
 		if(voucher.getValueEquivalent().getClass() == Burger.class){
 			runVoucherForBurger(voucher);
-			useVoucher(voucher);
+			if(this.voucherCanBeUsed){
+				useVoucher(voucher);
+			}
 		}
 		return completeTransaction();
 	}

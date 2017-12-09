@@ -292,7 +292,7 @@ public class TillTest{
 		till1.newTransaction();
 		till1.addBurger(burger2);//4.6
 		till1.addBurger(burger3);//4.3
-		assertEquals("The total transaction is £ 8.90", till1.completeTransactionWithVoucher(voucher1));
+		assertEquals("The total transaction is £ 8.90", till1.completeTransactionWithVoucher(voucher1).getTotal());
 		assertEquals(0, till1.getUsedVouchers());
 	}
 	
