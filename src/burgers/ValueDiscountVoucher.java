@@ -1,18 +1,18 @@
 package burgers;
 
-public class CashDiscountVoucher extends Voucher implements Voucherable {
+public class ValueDiscountVoucher extends Voucher implements Voucherable {
 
 	private double voucherValue;
 	
-	public CashDiscountVoucher(double value){
+	public ValueDiscountVoucher(double value){
 		this.voucherValue = value;
 	}
 	
 	public double getValue(){
 		return this.voucherValue;
 	}
-
+	
 	public Burger getValueEquivalent() {
 		return null;
-	}
+	}		
 }

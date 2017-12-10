@@ -11,7 +11,6 @@ public class Till {
 	private int processedTransactions;
 	private ArrayList<Voucherable> usedVouchers;
 	private HashMap<Productable, Integer> products;
-	private boolean voucherCanBeUsed;
 	
 	public Till(){
 		this.income = 0;
@@ -20,7 +19,6 @@ public class Till {
 		this.processedTransactions = 0;
 		this.usedVouchers = new ArrayList<Voucherable>();
 		this.products = new HashMap<Productable, Integer>();
-		this.voucherCanBeUsed = false;
 	}
 	
 	public int getUsedVouchers() {
@@ -108,7 +106,6 @@ public class Till {
 	public void newTransaction(){
 		this.burgers.clear();
 		this.products.clear();
-		this.voucherCanBeUsed = false;
 	}
 	
 	public int getNumberOfItems(){
@@ -194,14 +191,31 @@ public class Till {
 		HashMap<Burger, Integer> temp = new HashMap<Burger, Integer>();
 		for(Burger burger : this.burgers.keySet()){
 			if(calculateBurgerPrice(burger) == calculateBurgerPrice(voucher.getValueEquivalent()) && burger.getName() == voucher.getValueEquivalent().getName() && voucher.isValid()){
-				this.voucherCanBeUsed = true;
 				temp.put(burger, this.burgers.get(burger));
 				if(temp.get(temp.keySet().toArray()[0]) >1){
 					this.burgers.put((Burger)temp.keySet().toArray()[0], this.burgers.get(temp.keySet().toArray()[0])-1);
+					useVoucher(voucher);
 				}else if(this.burgers.get(temp.keySet().toArray()[0]) == 1){
 					this.burgers.put((Burger)temp.keySet().toArray()[0], 0);
+					useVoucher(voucher);
 				}
 			}
+		}
+	}
+	
+	private BigDecimal runVoucherForValue(Voucherable voucher){
+		double valueToDeduct = voucher.getValue();
+		BigDecimal total = new BigDecimal("" + calculateTransaction() + "");
+		if((double)total.doubleValue() <= valueToDeduct){
+			BigDecimal result = new BigDecimal("0.0");
+			this.income -=  total.doubleValue();
+			useVoucher(voucher);
+			return result;
+		}else{
+			BigDecimal result = new BigDecimal("" + (total.doubleValue()-valueToDeduct)+ "");
+			this.income -= voucher.getValue();
+			useVoucher(voucher);
+			return result;
 		}
 	}
 	
@@ -214,11 +228,14 @@ public class Till {
 	}
 	
 	public Receipt completeTransactionWithVoucher(Voucherable voucher){
-		if(voucher.getValueEquivalent().getClass() == Burger.class){
-			runVoucherForBurger(voucher);
-			if(this.voucherCanBeUsed){
-				useVoucher(voucher);
-			}
+		BigDecimal value = new BigDecimal("0.0");
+		if(voucher.getValueEquivalent() == null){
+			value = value.add(new BigDecimal("" + runVoucherForValue(voucher) + ""));
+			Receipt receipt = completeTransaction();
+			receipt.setTotal("The total transaction is £ " + (new BigDecimal(String.format("%.2f", calculateTransaction()))));
+			return receipt;
+		}else if(voucher.getValueEquivalent().getClass() == Burger.class && voucher.getValueEquivalent() != null){
+				runVoucherForBurger(voucher);	
 		}
 		return completeTransaction();
 	}
