@@ -203,19 +203,27 @@ public class Till {
 		}
 	}
 	
-	private BigDecimal runVoucherForValue(Voucherable voucher){
+	private void prepareReceipt(Receipt newReceipt, double value){
+		newReceipt.setPaid();
+		newReceipt.setTotalInDouble(value);
+		newReceipt.setTotal("The total transaction is £ " + (new BigDecimal(String.format("%.2f", (value)))));
+	}
+	
+	private Receipt runVoucherForValue(Voucherable voucher){
 		double valueToDeduct = voucher.getValue();
-		BigDecimal total = new BigDecimal("" + calculateTransaction() + "");
-		if((double)total.doubleValue() <= valueToDeduct){
-			BigDecimal result = new BigDecimal("0.0");
-			this.income -=  total.doubleValue();
+		Receipt receipt = completeTransaction();
+		double total = receipt.getTotalInDouble();
+		Receipt newReceipt = new Receipt();
+		if((double)total <= valueToDeduct){
+			prepareReceipt(newReceipt, 0.0);
 			useVoucher(voucher);
-			return result;
+			this.income -=  total;
+			return newReceipt;
 		}else{
-			BigDecimal result = new BigDecimal("" + (total.doubleValue()-valueToDeduct)+ "");
-			this.income -= voucher.getValue();
+			prepareReceipt(newReceipt, (total-valueToDeduct));
 			useVoucher(voucher);
-			return result;
+			this.income -= voucher.getValue();
+			return newReceipt;
 		}
 	}
 	
@@ -223,17 +231,14 @@ public class Till {
 		this.processedTransactions += 1;
 		Receipt receipt = new Receipt();
 		receipt.setTotal("The total transaction is £ " + (new BigDecimal(String.format("%.2f", calculateTransaction()))));
+		receipt.setTotalInDouble(this.income);
 		receipt.setPaid();
 		return receipt;
 	}
 	
 	public Receipt completeTransactionWithVoucher(Voucherable voucher){
-		BigDecimal value = new BigDecimal("0.0");
 		if(voucher.getValueEquivalent() == null){
-			value = value.add(new BigDecimal("" + runVoucherForValue(voucher) + ""));
-			Receipt receipt = completeTransaction();
-			receipt.setTotal("The total transaction is £ " + (new BigDecimal(String.format("%.2f", calculateTransaction()))));
-			return receipt;
+			return runVoucherForValue(voucher);
 		}else if(voucher.getValueEquivalent().getClass() == Burger.class && voucher.getValueEquivalent() != null){
 				runVoucherForBurger(voucher);	
 		}
