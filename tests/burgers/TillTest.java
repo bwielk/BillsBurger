@@ -460,4 +460,24 @@ public class TillTest{
 		assertEquals(18.90, till1.getIncome(), 0.1);
 		assertEquals("The total transaction is £ 18.90", receipt.getTotal());
 	}
+	
+	@Test
+	public void canCompleteATransactionWithADiscountVoucher_TransactionValueLessThanVoucherValue(){
+		till1.newTransaction();
+		till1.addBurger(burger1);//3.00
+		till1.addBurger(burger1);//3.00
+		Receipt receipt = till1.completeTransactionWithVoucher(voucher2);
+		assertEquals(0.0, till1.getIncome(), 0.1);
+		assertEquals("The total transaction is £ 0.00", receipt.getTotal());
+		till1.newTransaction();
+		till1.addBurger(burger1);//3.00
+		till1.addBurger(fitBurger1);//3.6
+		till1.addBurger(fitBurger2);//3.8
+		till1.addBurger(deluxeBurger1);//3.5
+		Receipt receipt2 = till1.completeTransactionWithVoucher(voucher1);
+		assertEquals(10.90, till1.getIncome(), 0.1);
+		assertEquals(5, till1.getSoldBurgers());
+		assertEquals(2, till1.getUsedVouchers());
+		assertEquals("The total transaction is £ 10.90", receipt2.getTotal());
+	}
 }
