@@ -190,7 +190,7 @@ public class Till {
 	private void runVoucherForBurger(Voucherable voucher){
 		HashMap<Burger, Integer> temp = new HashMap<Burger, Integer>();
 		for(Burger burger : this.burgers.keySet()){
-			if(calculateBurgerPrice(burger) == calculateBurgerPrice(voucher.getValueEquivalent()) && burger.getName() == voucher.getValueEquivalent().getName() && voucher.isValid()){
+			if(calculateBurgerPrice(burger) == calculateBurgerPrice((Burger) voucher.getValueEquivalent()) && burger.getName() == ((Burger) voucher.getValueEquivalent()).getName() && voucher.isValid()){
 				temp.put(burger, this.burgers.get(burger));
 				if(temp.get(temp.keySet().toArray()[0]) >1){
 					this.burgers.put((Burger)temp.keySet().toArray()[0], this.burgers.get(temp.keySet().toArray()[0])-1);
